@@ -4,9 +4,9 @@ services:
     w2b_core:
         build: .
         container_name: where2b_core
-        command: python  where2b_core/manage.py runserver 0.0.0.0:8000
+        command: python3 manage.py runserver 0.0.0.0:8000
         volumes:
-            - .:/usr/src/app/
+            - ./where2b_core:/usr/src/app/
         ports:
             - "8000:8000"
         depends_on:
