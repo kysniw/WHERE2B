@@ -40,5 +40,5 @@ docker exec -ti where2b_core /bin/sh -c "python3 manage.py createsuperuser"
 
 ### Strona startowa i panel admina
 
-0.0.0.0:8000
+0.0.0.0:8000 \
 0.0.0.0:8000/admin
