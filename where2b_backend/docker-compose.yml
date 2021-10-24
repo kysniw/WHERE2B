@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+    w2b_core:
+        build: .
+        container_name: where2b_core
+        command: python3 manage.py runserver 0.0.0.0:8000
+        volumes:
+            - ./where2b_core:/usr/src/app/
+        ports:
+            - "8000:8000"
+        depends_on:
+            - w2b_pgdb
+    w2b_pgdb:
+        image: postgres
+        container_name: where2b_pgdb
+        environment:
+            - POSTGRES_DB=where2b_postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - where2b_pgdata:/var/lib/postgresql/data/
+volumes:
+    where2b_pgdata:
