@@ -13,7 +13,7 @@ docker-compose build
 ### Uruchomienie i wyłączenie
 
 ```
-docker-compose up  //uruchomienie
+docker-compose up -d  //uruchomienie
 docker-compose down  //wyłączenie
 ```
 
@@ -25,8 +25,9 @@ docker exec -ti where2b_core /bin/sh -c "python3 manage.py migrate"
 
 ### Terminal w kontenerze
 
-```shell
-docker exec -ti where2b_core /bin/sh -c "python3 manage.py shell"
+
+``` shell
+docker exec -ti where2b_core /bin/sh
 ```
 
 Wyjście:
