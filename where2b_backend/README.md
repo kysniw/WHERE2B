@@ -19,11 +19,12 @@ docker-compose down  //wyłączenie
 
 Za pierwszym razem trzeba będzie uruchomić migracje z Django do bazy postgres:
 
-``` shell
+```shell
 docker exec -ti where2b_core /bin/sh -c "python3 manage.py migrate"
 ```
 
 ### Terminal w kontenerze
+
 
 ``` shell
 docker exec -ti where2b_core /bin/sh
@@ -34,7 +35,7 @@ Ctrl + d
 
 ### Utworzenie superużytkownika w Django
 
-``` shell
+```shell
 docker exec -ti where2b_core /bin/sh -c "python3 manage.py createsuperuser"
 ```
 
@@ -42,3 +43,9 @@ docker exec -ti where2b_core /bin/sh -c "python3 manage.py createsuperuser"
 
 0.0.0.0:8000 \
 0.0.0.0:8000/admin
+
+### Wczytanie kategorii
+
+```shell
+docker exec -ti where2b_core /bin/sh -c "python3 manage.py loaddata restaurants/fixtures/restaurant_categories.json"
+```
