@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 4,
+  "generator-cli": {
+    "version": "5.3.0",
+    "global-properties": {
+      "models": true,
+      "apis": false
+    },
+    "generators":{
+      "axios-generator": {
+        "generatorName": "typescript-axios",
+        "output": "./generated/",
+        "inputSpec": "http://localhost:8000/swagger/?format=openapi",
+        "additionalProperties": {
+          "supportsES6": "true",
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "apis",
+          "modelPackage": "models",
+          "removeOperationIdPrefix": true,
+          "modelNameSuffix": "Model"
+        }
+      }
+    }
+  }
+}
