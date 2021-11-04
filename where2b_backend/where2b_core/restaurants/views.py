@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import RestaurantCategory, Restaurant
 from .serializers import RestaurantCategorySerializer, RestaurantSerializer
 from .permissions import IsRestaurantOwner
-from users.permissions import IsRestaurantProfile
+from users.permissions import HasRestaurantProfile
 
 
 class ListRestaurantCategoriesViewSet(mixins.ListModelMixin,
