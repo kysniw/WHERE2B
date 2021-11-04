@@ -9,6 +9,7 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
     email = models.EmailField(help_text=_('email address'), unique=True)
+    username = models.CharField(help_text=_('username'), max_length=160, unique=True, null=True, blank=True)
     first_name = None
     last_name = None
 

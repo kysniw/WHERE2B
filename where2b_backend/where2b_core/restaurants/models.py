@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from users.models import RestaurantProfile
+
+
 class RestaurantCategory(models.Model):
 
 	name = models.CharField(help_text=_('Name'), max_length=250, unique=True, null=False, blank=False)
@@ -18,6 +21,8 @@ class Restaurant(models.Model):
 	max_number_of_people = models.PositiveIntegerField(help_text=_('Maximum number of people that can be in restaurant at given time'),
      null=True, blank=True)
 	categories = models.ManyToManyField(RestaurantCategory, help_text=_('Categories of restaurant'))
+	owner = models.ForeignKey(RestaurantProfile, default=None, on_delete=models.CASCADE, null=False, blank=False)
+	is_verified = models.BooleanField(default=False, null=False, blank=False)
 
 	def __str__(self):
 		return self.name
