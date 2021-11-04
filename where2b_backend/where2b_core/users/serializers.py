@@ -41,7 +41,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserProfile
 		fields = '__all__'
-		read_only_fields = ['id',]
+
+
+class UpdateUserProfileSerializer(serializers.ModelSerializer):
+
+
+	class Meta:
+		model = UserProfile
+		fields = ['first_name', 'last_name',]
 
 
 class RestaurantProfileSerializer(serializers.ModelSerializer):
@@ -84,3 +91,13 @@ class SignInSerializer(serializers.Serializer):
 			raise ValidationError(_('Wrong credentials.'))
 
 		raise ValidationError(_('Wrong credentials.'))
+
+
+class ResponseTokensSerializer(serializers.Serializer):
+
+	user_id = serializers.IntegerField()
+	refresh = serializers.CharField(max_length=500)
+	access = serializers.CharField(max_length=500)
+
+class ResponseTokenRefreshSerializer(serializers.Serializer):
+	access = serializers.CharField(max_length=500)
