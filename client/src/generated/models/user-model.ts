@@ -27,11 +27,11 @@ export interface UserModel {
      */
     'id'?: number;
     /**
-     * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+     * username
      * @type {string}
      * @memberof UserModel
      */
-    'username': string;
+    'username'?: string | null;
     /**
      * email address
      * @type {string}

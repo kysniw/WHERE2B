@@ -10,7 +10,7 @@
     "generators":{
       "axios-generator": {
         "generatorName": "typescript-axios",
-        "output": "./generated/",
+        "output": "./src/generated/",
         "inputSpec": "http://localhost:8000/swagger/?format=openapi",
         "additionalProperties": {
           "supportsES6": "true",

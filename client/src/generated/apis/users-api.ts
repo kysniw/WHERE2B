@@ -21,11 +21,17 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { ResponseTokenRefreshModel } from '../models';
+// @ts-ignore
+import { ResponseTokensModel } from '../models';
+// @ts-ignore
 import { RestaurantProfileModel } from '../models';
 // @ts-ignore
 import { SignInModel } from '../models';
 // @ts-ignore
 import { TokenRefreshModel } from '../models';
+// @ts-ignore
+import { UpdateUserProfileModel } from '../models';
 // @ts-ignore
 import { UserProfileModel } from '../models';
 /**
@@ -35,7 +41,7 @@ import { UserProfileModel } from '../models';
 export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+         * 
          * @param {TokenRefreshModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -456,11 +462,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfilePartialUpdate: async (user: string, data: UserProfileModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userProfilePartialUpdate: async (user: string, data: UpdateUserProfileModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'user' is not null or undefined
             assertParamExists('userProfilePartialUpdate', 'user', user)
             // verify required parameter 'data' is not null or undefined
@@ -536,11 +542,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfileUpdate: async (user: string, data: UserProfileModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userProfileUpdate: async (user: string, data: UpdateUserProfileModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'user' is not null or undefined
             assertParamExists('userProfileUpdate', 'user', user)
             // verify required parameter 'data' is not null or undefined
@@ -587,12 +593,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration)
     return {
         /**
-         * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+         * 
          * @param {TokenRefreshModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async loginRefreshCreate(data: TokenRefreshModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TokenRefreshModel>> {
+        async loginRefreshCreate(data: TokenRefreshModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseTokenRefreshModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loginRefreshCreate(data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -602,7 +608,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async loginTokensCreate(data: SignInModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SignInModel>> {
+        async loginTokensCreate(data: SignInModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseTokensModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.loginTokensCreate(data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -699,11 +705,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userProfilePartialUpdate(user: string, data: UserProfileModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileModel>> {
+        async userProfilePartialUpdate(user: string, data: UpdateUserProfileModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateUserProfileModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userProfilePartialUpdate(user, data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -720,11 +726,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userProfileUpdate(user: string, data: UserProfileModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileModel>> {
+        async userProfileUpdate(user: string, data: UpdateUserProfileModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateUserProfileModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userProfileUpdate(user, data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -739,12 +745,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     const localVarFp = UsersApiFp(configuration)
     return {
         /**
-         * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+         * 
          * @param {TokenRefreshModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginRefreshCreate(data: TokenRefreshModel, options?: any): AxiosPromise<TokenRefreshModel> {
+        loginRefreshCreate(data: TokenRefreshModel, options?: any): AxiosPromise<ResponseTokenRefreshModel> {
             return localVarFp.loginRefreshCreate(data, options).then((request) => request(axios, basePath));
         },
         /**
@@ -753,7 +759,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        loginTokensCreate(data: SignInModel, options?: any): AxiosPromise<SignInModel> {
+        loginTokensCreate(data: SignInModel, options?: any): AxiosPromise<ResponseTokensModel> {
             return localVarFp.loginTokensCreate(data, options).then((request) => request(axios, basePath));
         },
         /**
@@ -840,11 +846,11 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfilePartialUpdate(user: string, data: UserProfileModel, options?: any): AxiosPromise<UserProfileModel> {
+        userProfilePartialUpdate(user: string, data: UpdateUserProfileModel, options?: any): AxiosPromise<UpdateUserProfileModel> {
             return localVarFp.userProfilePartialUpdate(user, data, options).then((request) => request(axios, basePath));
         },
         /**
@@ -859,11 +865,11 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @param {string} user A unique value identifying this user profile.
-         * @param {UserProfileModel} data 
+         * @param {UpdateUserProfileModel} data 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfileUpdate(user: string, data: UserProfileModel, options?: any): AxiosPromise<UserProfileModel> {
+        userProfileUpdate(user: string, data: UpdateUserProfileModel, options?: any): AxiosPromise<UpdateUserProfileModel> {
             return localVarFp.userProfileUpdate(user, data, options).then((request) => request(axios, basePath));
         },
     };
@@ -877,7 +883,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
  */
 export class UsersApi extends BaseAPI {
     /**
-     * Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+     * 
      * @param {TokenRefreshModel} data 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1000,12 +1006,12 @@ export class UsersApi extends BaseAPI {
     /**
      * 
      * @param {string} user A unique value identifying this user profile.
-     * @param {UserProfileModel} data 
+     * @param {UpdateUserProfileModel} data 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public userProfilePartialUpdate(user: string, data: UserProfileModel, options?: AxiosRequestConfig) {
+    public userProfilePartialUpdate(user: string, data: UpdateUserProfileModel, options?: AxiosRequestConfig) {
         return UsersApiFp(this.configuration).userProfilePartialUpdate(user, data, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -1023,12 +1029,12 @@ export class UsersApi extends BaseAPI {
     /**
      * 
      * @param {string} user A unique value identifying this user profile.
-     * @param {UserProfileModel} data 
+     * @param {UpdateUserProfileModel} data 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public userProfileUpdate(user: string, data: UserProfileModel, options?: AxiosRequestConfig) {
+    public userProfileUpdate(user: string, data: UpdateUserProfileModel, options?: AxiosRequestConfig) {
         return UsersApiFp(this.configuration).userProfileUpdate(user, data, options).then((request) => request(this.axios, this.basePath));
     }
 }

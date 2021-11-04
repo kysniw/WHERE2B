@@ -57,6 +57,18 @@ export interface RestaurantModel {
      */
     'max_number_of_people'?: number | null;
     /**
+     * 
+     * @type {boolean}
+     * @memberof RestaurantModel
+     */
+    'is_verified'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof RestaurantModel
+     */
+    'owner'?: string;
+    /**
      * Categories of restaurant
      * @type {Set<number>}
      * @memberof RestaurantModel
