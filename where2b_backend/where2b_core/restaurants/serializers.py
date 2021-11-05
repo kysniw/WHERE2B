@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
 
-from .models import RestaurantCategory, Restaurant
+from .models import RestaurantCategory, Restaurant, Table
 
 class RestaurantCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
         model = Restaurant
         fields = '__all__'
         read_only_fields = ['id', 'owner', 'is_verified',]
+
+
+class TableSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Table
+        fields = '__all__'

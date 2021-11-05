@@ -19,7 +19,7 @@ class CreateRatingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Rating
 		fields = ['restaurant', 'rating', 'description']
-		read_only_fields = ['id', 'user', ]
+		read_only_fields = ['id', ]
 
 
 class ReadRatingSerializer(RatingSerializer):

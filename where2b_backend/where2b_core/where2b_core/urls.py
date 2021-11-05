@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/users/', include(('users.urls', 'users'), namespace='users')),
     path('api/restaurants/', include(('restaurants.urls', 'restaurants'), namespace='restaurants')),
     path('api/ratings/', include(('ratings.urls', 'ratings'), namespace='ratings')),
+    path('api/bookings/', include(('bookings.urls', 'bookings'), namespace='bookings')),
 ]
 
 
