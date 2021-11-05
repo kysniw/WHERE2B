@@ -19,22 +19,29 @@ from users.permissions import HasUserProfile
 class RatingViewSet(viewsets.ModelViewSet):
 
 	queryset = Rating.objects.all()
-	serializer_class = RatingSerializer
+	# serializer_class = RatingSerializer
 	filter_backends = [filters.DjangoFilterBackend, rest_filters.OrderingFilter]
 	filterset_fields = ['user', 'restaurant', 'rating']
 	ordering_fields = ['rating', ]
+
+	def get_serializer_class(self):
+
+		if self.action == 'create':
+			return CreateRatingSerializer
+		elif self.action == 'list':
+			return ReadRatingSerializer
+		else:
+			return RatingSerializer
 
 	@swagger_auto_schema(responses={201: ReadRatingSerializer(many=False)})
 	def create(self, request, *args, **kwargs):
 		user = request.user.userprofile
 		data = {**request.data, 'user': user}
-		serializer = self.serializer_class(data=data)
+		serializer = RatingSerializer(data=data)
 		serializer.is_valid(raise_exception=True)
 		serializer.save()
 
-		instance_serializer = ReadRatingSerializer(instance=serializer.instance)
-
-		return Response(instance_serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 	def get_permissions(self):
 
@@ -47,11 +54,3 @@ class RatingViewSet(viewsets.ModelViewSet):
 
 		return [permission() for permission in permission_classes]
 
-	def get_serializer_class(self):
-
-		if self.action == 'create':
-			return CreateRatingSerializer
-		elif self.action == 'list':
-			return ReadRatingSerializer
-		else:
-			return RatingSerializer
