@@ -1,11 +1,50 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, HelperText, TextInput } from "react-native-paper";
+
+import { SignInModel, UsersApi } from "../../generated";
 
 export default function LoginForm() {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const [loginError, setLoginError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+
+	const onLoginClicked = async () => {
+		if (isLoading) return;
+		setIsLoading(true);
+
+		const api = new UsersApi(); // api should be injected
+		const request: SignInModel = { login, password };
+
+		await api
+			.loginTokensCreate(request)
+			.then((response) => {
+				// save data and move to main screen
+				console.log(response.data);
+			})
+			.catch((error: Error) => {
+				// this type checking and casting may be not necessary if errors documented in swagger document
+				if (
+					axios.isAxiosError(error) &&
+					error.response?.status === 400
+				) {
+					const serverResponse = error.response.data as SignInModel;
+
+					// set errors from api response - not optimized way of input validation
+					setLoginError(serverResponse.login);
+					setPasswordError(serverResponse.password);
+				} else {
+					console.log("Error: " + error.message);
+				}
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	};
 
 	return (
 		<View style={{ width: "100%" }}>
@@ -43,8 +82,9 @@ export default function LoginForm() {
 				onChangeText={setLogin}
 				left={<TextInput.Icon name="email" />}
 			/>
+			{!!loginError && <HelperText type="error">{loginError}</HelperText>}
 			<TextInput
-				style={{ marginTop: 10 }}
+				style={{ marginTop: loginError ? 0 : 10 }}
 				dense
 				mode="outlined"
 				label="Password"
@@ -59,7 +99,15 @@ export default function LoginForm() {
 					/>
 				}
 			/>
-			<Button style={{ marginTop: 10 }} mode="contained">
+			{!!passwordError && (
+				<HelperText type="error">{passwordError}</HelperText>
+			)}
+			<Button
+				style={{ marginTop: passwordError ? 0 : 10 }}
+				onPress={onLoginClicked}
+				mode="contained"
+				loading={isLoading}
+			>
 				Login
 			</Button>
 		</View>
