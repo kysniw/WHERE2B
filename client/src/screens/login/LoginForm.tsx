@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
 
 import { SignInModel, UsersApi } from "../../generated";
+import UserStorage from "../../storage/UserStorage";
 
 export default function LoginForm() {
 	const [login, setLogin] = useState("");
@@ -22,8 +23,10 @@ export default function LoginForm() {
 
 		await api
 			.loginTokensCreate(request)
-			.then((response) => {
-				// save data and move to main screen
+			.then(async (response) => {
+				await UserStorage.saveData(response.data);
+
+				// move to main screen
 				console.log(response.data);
 			})
 			.catch((error: Error) => {

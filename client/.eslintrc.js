@@ -7,13 +7,13 @@ module.exports = {
 	extends: [
 		"universe",
 		"universe/shared/typescript-analysis",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking",
-		"eslint:recommended",
 		"prettier",
 		"prettier/react",
-		"prettier/@typescript-eslint",
 		"plugin:prettier/recommended",
+		"prettier/@typescript-eslint",
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 	],
 	plugins: ["@typescript-eslint", "react", "prettier"],
 	overrides: [
