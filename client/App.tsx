@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-url-polyfill/auto";
 
 import useCachedResources from "./hooks/useCachedResources";
 import LoginScreen from "./src/screens/login/LoginScreen";
