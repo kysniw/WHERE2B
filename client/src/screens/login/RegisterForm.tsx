@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
 
-import { UsersApi, UserProfileModel, UserModel } from "../../generated";
+import { UsersApi, UserModel, UserProfileModel } from "../../network/generated";
 
 export default function RegisterForm() {
 	const [username, setUsername] = useState("");

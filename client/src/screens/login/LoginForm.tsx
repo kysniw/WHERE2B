@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
 
-import { SignInModel, UsersApi } from "../../generated";
+import Api from "../../network/Api";
+import { SignInModel } from "../../network/generated";
 import UserStorage from "../../storage/UserStorage";
 
 export default function LoginForm() {
@@ -18,10 +19,9 @@ export default function LoginForm() {
 		if (isLoading) return;
 		setIsLoading(true);
 
-		const api = new UsersApi(); // api should be injected
 		const request: SignInModel = { login, password };
 
-		await api
+		await Api.usersApi
 			.loginTokensCreate(request)
 			.then(async (response) => {
 				await UserStorage.saveData(response.data);

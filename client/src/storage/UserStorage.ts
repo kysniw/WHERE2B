@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ResponseTokensModel } from "../generated";
+import { ResponseTokensModel } from "../network/generated";
 
 enum Keys {
 	REFRESH_TOKEN = "REFRESH_TOKEN",
