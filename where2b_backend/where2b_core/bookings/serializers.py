@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Booking
-from users.utils import is_restaurant
+from users.utils import has_restaurantprofile
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -24,7 +24,7 @@ class UpdateBookingSerializer(serializers.ModelSerializer):
 	def validate(self, data):
 
 		user = self.context['request'].user
-		if not is_restaurant(user):
+		if not has_restaurantprofile(user):
 
 			for key in data:
 				if key in self.fields and key != 'is_finished':

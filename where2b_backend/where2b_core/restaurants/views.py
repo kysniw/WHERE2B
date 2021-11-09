@@ -3,7 +3,12 @@ from rest_framework import mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from .models import RestaurantCategory, Restaurant, Table
-from .serializers import RestaurantCategorySerializer, RestaurantSerializer, TableSerializer
+from .serializers import (
+    RestaurantCategorySerializer,
+    RestaurantSerializer,
+    TableSerializer,
+    ListRestaurantSerializer
+)
 from .permissions import IsRestaurantOwner
 from users.permissions import HasRestaurantProfile
 
@@ -26,8 +31,14 @@ class RestaurantViewSet(viewsets.ModelViewSet):
             permission_classes = [IsRestaurantProfile, IsRestaurantOwner]
         return [permission() for permission in permission_classes]
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ListRestaurantSerializer
+        else:
+            return RestaurantSerializer
+
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantSerializer
+    # serializer_class = RestaurantSerializer
 
 
 class TableViewSet(viewsets.ModelViewSet):
