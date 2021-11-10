@@ -5,6 +5,7 @@ import { ResponseTokensModel } from "../network/generated";
 enum Keys {
 	REFRESH_TOKEN = "REFRESH_TOKEN",
 	USER_ID = "USER_ID",
+	ACCESS_TOKEN = "ACCESS_TOKEN",
 }
 
 export default abstract class UserStorage {
@@ -29,17 +30,25 @@ export default abstract class UserStorage {
 			const readValues = await AsyncStorage.multiGet([
 				Keys.USER_ID,
 				Keys.REFRESH_TOKEN,
+				Keys.ACCESS_TOKEN,
 			]);
 			const userIdValues = readValues.find((x) => x[0] === Keys.USER_ID);
 			const refreshTokenValues = readValues.find(
 				(x) => x[0] === Keys.REFRESH_TOKEN
 			);
+			const accessTokenValues = readValues.find(
+				(x) => x[0] === Keys.ACCESS_TOKEN
+			);
 
-			if (!!userIdValues?.[1] && !!refreshTokenValues?.[1]) {
+			if (
+				!!userIdValues?.[1] &&
+				!!refreshTokenValues?.[1] &&
+				!!accessTokenValues?.[1]
+			) {
 				this._loginResponse = {
 					refresh: refreshTokenValues[1],
 					user_id: Number(userIdValues[1]),
-					access: "", // new access token should be received in interceptor or sth
+					access: accessTokenValues[1],
 				};
 			}
 
@@ -64,13 +73,17 @@ export default abstract class UserStorage {
 		}
 	}
 
-	static saveAccessToken(token: string) {
-		if (this._loginResponse) {
-			this._loginResponse.access = token;
-			return true;
-		}
+	static async saveAccessToken(token: string) {
+		if (this._loginResponse === null) return false;
 
-		return false;
+		try {
+			this._loginResponse.access = token;
+			await AsyncStorage.setItem(Keys.ACCESS_TOKEN, token);
+
+			return true;
+		} catch {
+			return false;
+		}
 	}
 
 	static async deleteData() {
