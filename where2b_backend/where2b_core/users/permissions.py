@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 from django.contrib.auth.models import AnonymousUser
 
-from .models import RestaurantProfile
+from .models import UserProfile, RestaurantProfile
 
 
 class IsSelf(BasePermission):
@@ -14,7 +14,16 @@ class IsSelf(BasePermission):
 		return request.user == obj.user
 
 
-class IsRestaurantProfile(BasePermission):
+class HasUserProfile(BasePermission):
+
+    def has_permission(self, request, view):
+        
+        user_id = request.user.id
+        user_profile_exists = UserProfile.objects.filter(user_id=user_id).exists() 
+        return user_profile_exists
+
+
+class HasRestaurantProfile(BasePermission):
 
     def has_permission(self, request, view):
         

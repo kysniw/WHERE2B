@@ -55,6 +55,8 @@ INSTALLED_APPS = [
 
     'users',
     'restaurants',
+    'ratings',
+    'bookings',
 ]
 
 MIDDLEWARE = [
@@ -164,5 +166,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }

@@ -53,5 +53,13 @@ class OpeningHours(models.Model):
 class Table(models.Model):
 
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=False, blank=False)
-	capacity = models.PositiveIntegerField(help_text=_('Maximum number of people at the table'), null=False, blank=False)
+	number_of_seats = models.PositiveIntegerField(help_text=_('Maximum number of people at the table'), null=False, blank=False)
 	is_free = models.BooleanField(help_text=_('Is table free'), default=True, null=False, blank=False)
+	is_outside = models.BooleanField(help_text=_('Is table outside'), default=False, null=False, blank=False)
+
+
+	def __str__(self):
+		if self.number_of_seats == 1:
+			return f'Table for {self.number_of_seats} person.'
+		else:
+			return f'Table for {self.number_of_seats} people.'
