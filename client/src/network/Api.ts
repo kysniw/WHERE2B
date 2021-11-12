@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import UserStorage from "../storage/UserStorage";
 import { RestaurantsApi, TokenRefreshModel, UsersApi } from "./generated";
-import { BASE_PATH } from "./generated/base";
 
 interface AxiosRequestConfigRetry extends AxiosRequestConfig {
 	_retry: boolean | undefined;
@@ -10,15 +9,16 @@ interface AxiosRequestConfigRetry extends AxiosRequestConfig {
 
 export default abstract class Api {
 	private static _axiosInstance: AxiosInstance = Api.createAxiosInstance();
+	private static _serverApiUrl = `${process.env["SERVER_URL"] ?? ""}/api`;
 
 	private static _usersApi = new UsersApi(
 		undefined,
-		BASE_PATH,
+		Api._serverApiUrl,
 		this._axiosInstance
 	);
 	private static _restaurantsApi = new RestaurantsApi(
 		undefined,
-		BASE_PATH,
+		Api._serverApiUrl,
 		this._axiosInstance
 	);
 
@@ -33,6 +33,7 @@ export default abstract class Api {
 		const instance = axios.create();
 
 		instance.interceptors.request.use((request) => {
+			console.log(Api._serverApiUrl);
 			const token = UserStorage.accessToken;
 			if (token) {
 				request.headers = {
