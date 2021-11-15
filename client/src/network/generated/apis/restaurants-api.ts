@@ -21,9 +21,15 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { RestaurantCategoryModel } from '../models';
+import { InlineResponse2001Model } from '../models';
+// @ts-ignore
+import { InlineResponse2002Model } from '../models';
+// @ts-ignore
+import { InlineResponse2003Model } from '../models';
 // @ts-ignore
 import { RestaurantModel } from '../models';
+// @ts-ignore
+import { TableModel } from '../models';
 /**
  * RestaurantsApi - axios parameter creator
  * @export
@@ -32,10 +38,12 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantCategoriesList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurantCategoriesList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/restaurants/restaurant-categories/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -50,6 +58,14 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -138,10 +154,12 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurantList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/restaurants/restaurant/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -156,6 +174,14 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -288,6 +314,242 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableCreate: async (data: TableModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('tableCreate', 'data', data)
+            const localVarPath = `/restaurants/table/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tableDelete', 'id', id)
+            const localVarPath = `/restaurants/table/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/restaurants/table/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tablePartialUpdate: async (id: number, data: TableModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tablePartialUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('tablePartialUpdate', 'data', data)
+            const localVarPath = `/restaurants/table/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableRead: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tableRead', 'id', id)
+            const localVarPath = `/restaurants/table/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableUpdate: async (id: number, data: TableModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tableUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('tableUpdate', 'data', data)
+            const localVarPath = `/restaurants/table/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -300,11 +562,13 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurantCategoriesList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RestaurantCategoryModel>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantCategoriesList(options);
+        async restaurantCategoriesList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001Model>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantCategoriesList(limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -329,11 +593,13 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurantList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RestaurantModel>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantList(options);
+        async restaurantList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002Model>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantList(limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -368,6 +634,69 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantUpdate(id, data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tableCreate(data: TableModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableCreate(data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tableDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tableList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003Model>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableList(limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tablePartialUpdate(id: number, data: TableModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tablePartialUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tableRead(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableRead(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tableUpdate(id: number, data: TableModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -380,11 +709,13 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantCategoriesList(options?: any): AxiosPromise<Array<RestaurantCategoryModel>> {
-            return localVarFp.restaurantCategoriesList(options).then((request) => request(axios, basePath));
+        restaurantCategoriesList(limit?: number, offset?: number, options?: any): AxiosPromise<InlineResponse2001Model> {
+            return localVarFp.restaurantCategoriesList(limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -406,11 +737,13 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantList(options?: any): AxiosPromise<Array<RestaurantModel>> {
-            return localVarFp.restaurantList(options).then((request) => request(axios, basePath));
+        restaurantList(limit?: number, offset?: number, options?: any): AxiosPromise<InlineResponse2002Model> {
+            return localVarFp.restaurantList(limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -441,6 +774,63 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         restaurantUpdate(id: number, data: RestaurantModel, options?: any): AxiosPromise<RestaurantModel> {
             return localVarFp.restaurantUpdate(id, data, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableCreate(data: TableModel, options?: any): AxiosPromise<TableModel> {
+            return localVarFp.tableCreate(data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.tableDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableList(limit?: number, offset?: number, options?: any): AxiosPromise<InlineResponse2003Model> {
+            return localVarFp.tableList(limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tablePartialUpdate(id: number, data: TableModel, options?: any): AxiosPromise<TableModel> {
+            return localVarFp.tablePartialUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableRead(id: number, options?: any): AxiosPromise<TableModel> {
+            return localVarFp.tableRead(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this table.
+         * @param {TableModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tableUpdate(id: number, data: TableModel, options?: any): AxiosPromise<TableModel> {
+            return localVarFp.tableUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -453,12 +843,14 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
 export class RestaurantsApi extends BaseAPI {
     /**
      * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
      */
-    public restaurantCategoriesList(options?: AxiosRequestConfig) {
-        return RestaurantsApiFp(this.configuration).restaurantCategoriesList(options).then((request) => request(this.axios, this.basePath));
+    public restaurantCategoriesList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantCategoriesList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -485,12 +877,14 @@ export class RestaurantsApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
      */
-    public restaurantList(options?: AxiosRequestConfig) {
-        return RestaurantsApiFp(this.configuration).restaurantList(options).then((request) => request(this.axios, this.basePath));
+    public restaurantList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -526,5 +920,74 @@ export class RestaurantsApi extends BaseAPI {
      */
     public restaurantUpdate(id: number, data: RestaurantModel, options?: AxiosRequestConfig) {
         return RestaurantsApiFp(this.configuration).restaurantUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {TableModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tableCreate(data: TableModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableCreate(data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this table.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tableDelete(id: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tableList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableList(limit, offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this table.
+     * @param {TableModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tablePartialUpdate(id: number, data: TableModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tablePartialUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this table.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tableRead(id: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableRead(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this table.
+     * @param {TableModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public tableUpdate(id: number, data: TableModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
     }
 }

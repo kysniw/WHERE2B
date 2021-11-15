@@ -14,8 +14,23 @@
 
 
 
-export * from './apis/bookings-api';
-export * from './apis/ratings-api';
-export * from './apis/restaurants-api';
-export * from './apis/users-api';
+/**
+ * 
+ * @export
+ * @interface CreateBookingModel
+ */
+export interface CreateBookingModel {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateBookingModel
+     */
+    'table': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateBookingModel
+     */
+    'date': string;
+}
 

@@ -2,6 +2,8 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import UserStorage from "../storage/UserStorage";
 import { RestaurantsApi, TokenRefreshModel, UsersApi } from "./generated";
+import { BookingsApi } from "./generated/apis/bookings-api";
+import { RatingsApi } from "./generated/apis/ratings-api";
 
 interface AxiosRequestConfigRetry extends AxiosRequestConfig {
 	_retry: boolean | undefined;
@@ -21,12 +23,28 @@ export default abstract class Api {
 		Api._serverApiUrl,
 		this._axiosInstance
 	);
+	private static _bookingsApi = new BookingsApi(
+		undefined,
+		Api._serverApiUrl,
+		this._axiosInstance
+	);
+	private static _ratingsApi = new RatingsApi(
+		undefined,
+		Api._serverApiUrl,
+		this._axiosInstance
+	);
 
 	public static get usersApi() {
 		return this._usersApi;
 	}
 	public static get restaurantsApi() {
 		return this._restaurantsApi;
+	}
+	public static get bookingsApi() {
+		return this._bookingsApi;
+	}
+	public static get ratingsApi() {
+		return this._ratingsApi;
 	}
 
 	private static createAxiosInstance(): AxiosInstance {
