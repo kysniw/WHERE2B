@@ -13,37 +13,37 @@
  */
 
 
-import { RestaurantCategoryModel } from './restaurant-category-model';
+import { UserProfileModel } from './user-profile-model';
 
 /**
  * 
  * @export
- * @interface InlineResponse2001Model
+ * @interface UserProfileListResponseModel
  */
-export interface InlineResponse2001Model {
+export interface UserProfileListResponseModel {
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2001Model
+     * @memberof UserProfileListResponseModel
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2001Model
+     * @memberof UserProfileListResponseModel
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2001Model
+     * @memberof UserProfileListResponseModel
      */
     'previous'?: string | null;
     /**
      * 
-     * @type {Array<RestaurantCategoryModel>}
-     * @memberof InlineResponse2001Model
+     * @type {Array<UserProfileModel>}
+     * @memberof UserProfileListResponseModel
      */
-    'results': Array<RestaurantCategoryModel>;
+    'results': Array<UserProfileModel>;
 }
 

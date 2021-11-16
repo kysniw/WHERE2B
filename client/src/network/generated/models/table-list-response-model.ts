@@ -13,37 +13,37 @@
  */
 
 
-import { UserProfileModel } from './user-profile-model';
+import { TableModel } from './table-model';
 
 /**
  * 
  * @export
- * @interface InlineResponse2005Model
+ * @interface TableListResponseModel
  */
-export interface InlineResponse2005Model {
+export interface TableListResponseModel {
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2005Model
+     * @memberof TableListResponseModel
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2005Model
+     * @memberof TableListResponseModel
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2005Model
+     * @memberof TableListResponseModel
      */
     'previous'?: string | null;
     /**
      * 
-     * @type {Array<UserProfileModel>}
-     * @memberof InlineResponse2005Model
+     * @type {Array<TableModel>}
+     * @memberof TableListResponseModel
      */
-    'results': Array<UserProfileModel>;
+    'results': Array<TableModel>;
 }
 

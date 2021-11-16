@@ -13,37 +13,37 @@
  */
 
 
-import { RestaurantModel } from './restaurant-model';
+import { RestaurantProfileModel } from './restaurant-profile-model';
 
 /**
  * 
  * @export
- * @interface InlineResponse2002Model
+ * @interface RestaurantProfileListResponseModel
  */
-export interface InlineResponse2002Model {
+export interface RestaurantProfileListResponseModel {
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2002Model
+     * @memberof RestaurantProfileListResponseModel
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2002Model
+     * @memberof RestaurantProfileListResponseModel
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2002Model
+     * @memberof RestaurantProfileListResponseModel
      */
     'previous'?: string | null;
     /**
      * 
-     * @type {Array<RestaurantModel>}
-     * @memberof InlineResponse2002Model
+     * @type {Array<RestaurantProfileModel>}
+     * @memberof RestaurantProfileListResponseModel
      */
-    'results': Array<RestaurantModel>;
+    'results': Array<RestaurantProfileModel>;
 }
 

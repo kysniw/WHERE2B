@@ -18,31 +18,31 @@ import { ReadRatingModel } from './read-rating-model';
 /**
  * 
  * @export
- * @interface InlineResponse200Model
+ * @interface ReadRatingListResponseModel
  */
-export interface InlineResponse200Model {
+export interface ReadRatingListResponseModel {
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse200Model
+     * @memberof ReadRatingListResponseModel
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse200Model
+     * @memberof ReadRatingListResponseModel
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse200Model
+     * @memberof ReadRatingListResponseModel
      */
     'previous'?: string | null;
     /**
      * 
      * @type {Array<ReadRatingModel>}
-     * @memberof InlineResponse200Model
+     * @memberof ReadRatingListResponseModel
      */
     'results': Array<ReadRatingModel>;
 }

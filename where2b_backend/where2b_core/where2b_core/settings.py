@@ -37,7 +37,10 @@ SWAGGER_SETTINGS = {
             'name': 'Authorization',
             'in': 'header'
       }
-   }
+   },
+   "DEFAULT_PAGINATOR_INSPECTORS": [
+        'where2b_core.pagination.MyPaginationInspector',
+    ]
 }
 
 INSTALLED_APPS = [

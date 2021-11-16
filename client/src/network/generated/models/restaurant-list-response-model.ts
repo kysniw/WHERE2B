@@ -13,37 +13,37 @@
  */
 
 
-import { TableModel } from './table-model';
+import { RestaurantModel } from './restaurant-model';
 
 /**
  * 
  * @export
- * @interface InlineResponse2003Model
+ * @interface RestaurantListResponseModel
  */
-export interface InlineResponse2003Model {
+export interface RestaurantListResponseModel {
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2003Model
+     * @memberof RestaurantListResponseModel
      */
     'count': number;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2003Model
+     * @memberof RestaurantListResponseModel
      */
     'next'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof InlineResponse2003Model
+     * @memberof RestaurantListResponseModel
      */
     'previous'?: string | null;
     /**
      * 
-     * @type {Array<TableModel>}
-     * @memberof InlineResponse2003Model
+     * @type {Array<RestaurantModel>}
+     * @memberof RestaurantListResponseModel
      */
-    'results': Array<TableModel>;
+    'results': Array<RestaurantModel>;
 }
 
