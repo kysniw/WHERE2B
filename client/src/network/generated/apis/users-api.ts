@@ -196,10 +196,12 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantProfileList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurantProfileList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/users/restaurant-profile/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -214,6 +216,14 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -422,10 +432,12 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfileList: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userProfileList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/users/user-profile/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -440,6 +452,14 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -624,11 +644,13 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurantProfileList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantProfileListResponseModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantProfileList(options);
+        async restaurantProfileList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantProfileListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantProfileList(limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -685,11 +707,13 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userProfileList(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileListResponseModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userProfileList(options);
+        async userProfileList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userProfileList(limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -772,11 +796,13 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantProfileList(options?: any): AxiosPromise<RestaurantProfileListResponseModel> {
-            return localVarFp.restaurantProfileList(options).then((request) => request(axios, basePath));
+        restaurantProfileList(limit?: number, offset?: number, options?: any): AxiosPromise<RestaurantProfileListResponseModel> {
+            return localVarFp.restaurantProfileList(limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -827,11 +853,13 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userProfileList(options?: any): AxiosPromise<UserProfileListResponseModel> {
-            return localVarFp.userProfileList(options).then((request) => request(axios, basePath));
+        userProfileList(limit?: number, offset?: number, options?: any): AxiosPromise<UserProfileListResponseModel> {
+            return localVarFp.userProfileList(limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -918,12 +946,14 @@ export class UsersApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public restaurantProfileList(options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).restaurantProfileList(options).then((request) => request(this.axios, this.basePath));
+    public restaurantProfileList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return UsersApiFp(this.configuration).restaurantProfileList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -985,12 +1015,14 @@ export class UsersApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public userProfileList(options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).userProfileList(options).then((request) => request(this.axios, this.basePath));
+    public userProfileList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return UsersApiFp(this.configuration).userProfileList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

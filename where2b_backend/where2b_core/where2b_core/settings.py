@@ -40,6 +40,7 @@ SWAGGER_SETTINGS = {
    },
    "DEFAULT_PAGINATOR_INSPECTORS": [
         'where2b_core.pagination.MyPaginationInspector',
+        'drf_yasg.inspectors.CoreAPICompatInspector'
     ]
 }
 
