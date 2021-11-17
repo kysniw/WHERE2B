@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import * as React from "react";
+import { useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "react-native-url-polyfill/auto";
 
-import useCachedResources from "./hooks/useCachedResources";
-import LoginScreen from "./src/screens/login/LoginScreen";
 import UserStorage from "./src/storage/UserStorage";
+import useCachedResources from "./hooks/useCachedResources";
+import Navigation from "./src/navigation";
 
 export default function App() {
 	const isLoadingComplete = useCachedResources();
@@ -25,7 +26,7 @@ export default function App() {
 		return (
 			<PaperProvider>
 				<SafeAreaProvider>
-					<LoginScreen />
+					<Navigation />
 				</SafeAreaProvider>
 			</PaperProvider>
 		);
