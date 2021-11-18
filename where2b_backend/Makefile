@@ -23,3 +23,5 @@ django-shell:
 	docker exec -ti where2b_core /bin/sh -c "python3 manage.py shell"
 test:
 	docker exec -ti where2b_core /bin/sh -c "python3 manage.py test"
+recommender:
+	docker exec -ti where2b_core /bin/sh -c "python3 manage.py shell < recommender.py"

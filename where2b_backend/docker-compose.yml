@@ -20,5 +20,30 @@ services:
             - POSTGRES_PASSWORD=postgres
         volumes:
             - where2b_pgdata:/var/lib/postgresql/data/
+    w2b_redis:
+        image: redis:alpine
+        ports:
+            - "6379:6379"
+    w2b_celery:
+        build: .
+        command: celery -A where2b_core worker -l info
+        environment:
+          - DB_HOST=w2b_pgdb
+          - DB_NAME=where2b_postgres
+          - DB_USER=postgres
+          - DB_PASS=postgres
+        volumes:
+            - ./where2b_core:/usr/src/app/
+        depends_on:
+          - w2b_pgdb
+          - w2b_redis
+          - w2b_core
+    w2b_celery-beat:
+        build: .
+        command: celery -A where2b_core beat -l info
+        volumes:
+            - ./where2b_core:/usr/src/app/
+        depends_on:
+            - w2b_redis
 volumes:
     where2b_pgdata:
