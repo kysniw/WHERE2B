@@ -98,6 +98,8 @@ class ResponseTokensSerializer(serializers.Serializer):
 	user_id = serializers.IntegerField()
 	refresh = serializers.CharField(max_length=500)
 	access = serializers.CharField(max_length=500)
+	is_restaurant_profile = serializers.BooleanField(required=False)
+
 
 class ResponseTokenRefreshSerializer(serializers.Serializer):
 	access = serializers.CharField(max_length=500)
