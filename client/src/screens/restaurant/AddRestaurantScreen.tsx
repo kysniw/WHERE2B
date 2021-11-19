@@ -1,6 +1,8 @@
+import { useTheme } from "@react-navigation/native";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import {
 	Button,
 	HelperText,
@@ -9,6 +11,7 @@ import {
 	Text,
 	Title,
 	Checkbox,
+	Subheading,
 } from "react-native-paper";
 import Api from "../../network/Api";
 
@@ -17,6 +20,7 @@ import {
 	RestaurantModel,
 	RestaurantsApi,
 } from "../../network/generated";
+import UserStorage from "../../storage/UserStorage";
 
 export default function AddRestaurantScreen({ navigation }) {
 	const [name, setName] = useState("");
@@ -26,15 +30,22 @@ export default function AddRestaurantScreen({ navigation }) {
 	const [is_making_reservations, setIsReservation] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
-	const [checked, setChecked] = useState(
-		new Array(categories.length).fill(false)
-	);
+	const [categoriesSet, setCategoriesSet] = useState(new Set<number>());
+	let number = categories.length;
+
+	const [checked, setChecked] = useState(new Array(9).fill(false));
+
+	console.log(number);
+	console.log(checked);
+
+	useEffect(() => {
+		getRestaurantCategories();
+	}, []);
 
 	const getRestaurantCategories = async () => {
 		await Api.restaurantsApi
 			.restaurantCategoriesList()
 			.then(async (response) => {
-				console.log(response.data.results[3]);
 				setCategories(response.data.results);
 			})
 			.catch((error) => {
@@ -43,50 +54,48 @@ export default function AddRestaurantScreen({ navigation }) {
 			});
 	};
 
-	useEffect(() => {
-		getRestaurantCategories();
-	}, []);
-
 	const onRegisterClicked = async () => {
 		if (isLoading) return;
 		setIsLoading(true);
 
-		const api = new RestaurantsApi(); // api should be injected
+		checked.forEach((el, index) => {
+			if (el) categoriesSet.add(index);
+		});
+
 		const request: RestaurantModel = {
 			name,
 			latitude,
 			longitude,
 			max_number_of_people: parseInt(max_number_of_people),
 			is_making_reservations,
-			categories,
+			categories: categoriesSet,
 		};
 
-		await api
+		await Api.restaurantsApi
 			.restaurantCreate(request)
-			//.then((_) => move to login form)
-			.catch((error: Error) => {
-				// this type checking and casting may be not necessary if errors documented in swagger document
-				console.log(error.message);
+			.then(async (response) => {
+				console.log(response.data);
 			})
-			.finally(() => {
-				setIsLoading(false);
-				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
+			.catch((error) => {
+				console.error(error.response.data);
 			});
+	};
+
+	const handleCheck = (position) => {
+		const updateCategories = checked.map((item, index) =>
+			index === position ? !item : item
+		);
+
+		setChecked(updateCategories);
 	};
 
 	const categoriesCheckBoxes = categories.map(({ name }, id) => {
 		return (
-			<View>
+			<View key={id}>
 				<Checkbox.Item
 					label={name}
 					status={checked[id] ? "checked" : "unchecked"}
-					onPress={() =>
-						setChecked(
-							checked.map((item, index) => {
-								index === id ? !item : item;
-							})
-						)
-					}
+					onPress={() => handleCheck(id)}
 				/>
 			</View>
 		);
@@ -126,16 +135,15 @@ export default function AddRestaurantScreen({ navigation }) {
 					onChangeText={setMaxNumber}
 				/>
 				<View style={styles.switch_view}>
-					<Text>Table reservation</Text>
+					<Subheading>Table reservation</Subheading>
 					<Switch
-						style={{ flexDirection: "row-reverse" }}
 						value={is_making_reservations}
 						onValueChange={() =>
 							setIsReservation(!is_making_reservations)
 						}
 					/>
 				</View>
-				{categoriesCheckBoxes}
+				<ScrollView>{categoriesCheckBoxes}</ScrollView>
 				<Button
 					style={{ marginTop: 10 }}
 					mode="contained"
@@ -162,6 +170,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		flexDirection: "row",
 		alignItems: "center",
+		justifyContent: "space-between",
 	},
 	title: {
 		flex: 1,

@@ -38,5 +38,11 @@ export interface ResponseTokensModel {
      * @memberof ResponseTokensModel
      */
     'access': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ResponseTokensModel
+     */
+    'is_restaurant_profile'?: boolean;
 }
 
