@@ -1,11 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { Button, HelperText, TextInput, Text } from "react-native-paper";
 import Api from "../../network/Api";
 import { SignInModel } from "../../network/generated";
 import UserStorage from "../../storage/UserStorage";
-
 
 export default function LoginScreen({ navigation }) {
 	const [login, setLogin] = useState("");
@@ -28,6 +27,13 @@ export default function LoginScreen({ navigation }) {
 
 				// move to main screen
 				console.log(response.data);
+				if (response.data.is_restaurant_profile) {
+					Alert.alert("Logged as restaurant owner");
+					navigation.navigate("AddRestaurant");
+				} else {
+					Alert.alert("Logged as app user");
+					navigation.navigate("UserScreen");
+				}
 			})
 			.catch((error: Error) => {
 				// this type checking and casting may be not necessary if errors documented in swagger document
@@ -46,7 +52,6 @@ export default function LoginScreen({ navigation }) {
 			})
 			.finally(() => {
 				setIsLoading(false);
-				
 			});
 	};
 

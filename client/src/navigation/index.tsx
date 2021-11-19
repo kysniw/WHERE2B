@@ -20,7 +20,7 @@ export default function Navigation() {
 		<NavigationContainer
 			theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
 		>
-			<Stack.Navigator initialRouteName="AddRestaurant">
+			<Stack.Navigator initialRouteName="UserLogin">
 				<Stack.Screen
 					name="UserLogin"
 					component={LoginScreen}
