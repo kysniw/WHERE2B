@@ -25,12 +25,17 @@ export default function AddRestaurantScreen({ navigation }) {
 	const [max_number_of_people, setMaxNumber] = useState("");
 	const [is_making_reservations, setIsReservation] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
+	const [checked, setChecked] = useState(
+		new Array(categories.length).fill(false)
+	);
 
 	const getRestaurantCategories = async () => {
 		await Api.restaurantsApi
 			.restaurantCategoriesList()
 			.then(async (response) => {
 				console.log(response.data.results[3]);
+				setCategories(response.data.results);
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -41,8 +46,6 @@ export default function AddRestaurantScreen({ navigation }) {
 	useEffect(() => {
 		getRestaurantCategories();
 	}, []);
-
-	//	const [checkedCategory, setCheckedCategory] = useState(new Array(categoriesList.length))
 
 	const onRegisterClicked = async () => {
 		if (isLoading) return;
@@ -71,7 +74,23 @@ export default function AddRestaurantScreen({ navigation }) {
 			});
 	};
 
-	//	const categoriesCheckBoxes = {};
+	const categoriesCheckBoxes = categories.map(({ name }, id) => {
+		return (
+			<View>
+				<Checkbox.Item
+					label={name}
+					status={checked[id] ? "checked" : "unchecked"}
+					onPress={() =>
+						setChecked(
+							checked.map((item, index) => {
+								index === id ? !item : item;
+							})
+						)
+					}
+				/>
+			</View>
+		);
+	});
 
 	return (
 		<View style={styles.container}>
@@ -116,9 +135,7 @@ export default function AddRestaurantScreen({ navigation }) {
 						}
 					/>
 				</View>
-				<View>
-					<Checkbox status="unchecked" />
-				</View>
+				{categoriesCheckBoxes}
 				<Button
 					style={{ marginTop: 10 }}
 					mode="contained"
