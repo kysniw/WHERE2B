@@ -10,7 +10,8 @@ import LoginScreen from "../screens/login/LoginScreen";
 import RegisterScreen from "../screens/login/RegisterScreen";
 import AddRestaurantScreen from "../screens/restaurant/AddRestaurantScreen";
 import RegisterRestauratorScreen from "../screens/login/RegisterRestauratorScreen";
-import UserScreen from "../screens/user/MainScreen";
+import MainUserScreen from "../screens/user/MainUserScreen";
+import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
 
 export default function Navigation() {
 	const Stack = createNativeStackNavigator();
@@ -53,7 +54,23 @@ export default function Navigation() {
 						headerShown: false,
 					}}
 				/>
-				<Stack.Screen name="UserScreen" component={UserScreen} />
+				<Stack.Screen
+					name="MainUserScreen"
+					component={MainUserScreen}
+					options={{
+						title: "Panel główny",
+						headerShown: true,
+						headerBackButtonMenuEnabled: false,
+					}}
+				/>
+				<Stack.Screen
+					name="MainRestaurantScreen"
+					component={MainRestaurantScreen}
+					options={{
+						title: "Panel główny restauracji",
+						headerShown: false,
+					}}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
