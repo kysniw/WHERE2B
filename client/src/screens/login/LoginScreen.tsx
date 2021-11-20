@@ -27,12 +27,12 @@ export default function LoginScreen({ navigation }) {
 
 				// move to main screen
 				console.log(response.data);
-				if (response.data.is_restaurant_profile) {
+				if (response.data.is_restaurant_profile == true) {
 					Alert.alert("Logged as restaurant owner");
-					navigation.navigate("AddRestaurant");
+					navigation.navigate("MainRestaurantScreen");
 				} else {
 					Alert.alert("Logged as app user");
-					navigation.navigate("UserScreen");
+					navigation.navigate("MainUserScreen");
 				}
 			})
 			.catch((error: Error) => {
@@ -133,7 +133,7 @@ export default function LoginScreen({ navigation }) {
 			<Button
 				mode="text"
 				style={styles.changeFormButton}
-				onPress={() => navigation.navigate("UserRegisterRest")}
+				onPress={() => navigation.navigate("RestauratorRegister")}
 			>
 				Register as restaurator
 			</Button>
