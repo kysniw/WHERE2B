@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
+import Api from "../../network/Api";
 
 import { UsersApi, UserModel, UserProfileModel } from "../../network/generated";
 
@@ -18,17 +19,19 @@ export default function RegisterRestauratorScreen({ navigation }) {
 		if (isLoading) return;
 		setIsLoading(true);
 
-		const api = new UsersApi(); // api should be injected
 		const user: UserModel = { username, email, password };
 		const request: UserProfileModel = {
 			user,
 		};
 
-		await api
+		await Api.usersApi
 			.restaurantProfileCreate(request)
-			//.then((_) => move to login form)
+			.then((response) => {
+				console.log(response.data);
+				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
+				navigation.navigate("UserLogin");
+			})
 			.catch((error: Error) => {
-				// this type checking and casting may be not necessary if errors documented in swagger document
 				if (
 					axios.isAxiosError(error) &&
 					error.response?.status === 400
@@ -45,8 +48,6 @@ export default function RegisterRestauratorScreen({ navigation }) {
 			})
 			.finally(() => {
 				setIsLoading(false);
-				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
-				navigation.navigate("UserLogin");
 			});
 	};
 
