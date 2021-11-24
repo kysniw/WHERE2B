@@ -8,22 +8,27 @@ import {
 	Card,
 	Title,
 } from "react-native-paper";
-import { View, StyleSheet, useColorScheme } from "react-native";
+import { View, StyleSheet, useColorScheme, RefreshControl } from "react-native";
 import { RestaurantModel } from "../../network/generated";
 import Api from "../../network/Api";
 import UserStorage from "../../storage/UserStorage";
 
 export default function MainRestaurantScreen({ navigation }) {
 	const colorScheme = useColorScheme();
-
 	const [restaurantsArray, setRestaurantsArray] = useState<RestaurantModel[]>(
 		[]
 	);
+	const [refreshing, setRefreshing] = useState(true);
+
+	useEffect(() => {
+		getRestaurantList();
+	}, []);
 
 	const getRestaurantList = async () => {
 		await Api.restaurantsApi
 			.restaurantList()
 			.then((response) => {
+				setRefreshing(false);
 				console.log(response.data.results);
 				setRestaurantsArray(response.data.results);
 			})
@@ -31,10 +36,6 @@ export default function MainRestaurantScreen({ navigation }) {
 				console.error(error.response.message);
 			});
 	};
-
-	useEffect(() => {
-		getRestaurantList();
-	}, []);
 
 	const restaurantList = restaurantsArray.map(
 		({ name, longitude, latitude, owner }, id) => {
@@ -69,7 +70,15 @@ export default function MainRestaurantScreen({ navigation }) {
 					}
 				/>
 			</Appbar.Header>
-			<ScrollView style={styles.scrollview}>
+			<ScrollView
+				style={styles.scrollview}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={getRestaurantList}
+					/>
+				}
+			>
 				{restaurantsArray != null ? (
 					restaurantList
 				) : (
