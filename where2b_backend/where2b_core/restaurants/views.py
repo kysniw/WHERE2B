@@ -35,3 +35,15 @@ class TableViewSet(viewsets.ModelViewSet):
     permission_classes = [IsRestaurantOwner]
     queryset = Table.objects.all()
     serializer_class = TableSerializer
+
+
+class ListUserRestaurantsViewSet(mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+  
+    permission_classes = [HasRestaurantProfile,]
+    serializer_class = RestaurantSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Restaurant.objects.filter(owner=user.restaurantprofile)
+        return queryset
