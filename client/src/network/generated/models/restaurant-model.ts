@@ -70,9 +70,9 @@ export interface RestaurantModel {
     'owner'?: string;
     /**
      * Categories of restaurant
-     * @type {Set<number>}
+     * @type {Array<number>}
      * @memberof RestaurantModel
      */
-    'categories': Set<number>;
+    'categories': Array<number>;
 }
 
