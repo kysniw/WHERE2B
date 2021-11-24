@@ -1,15 +1,11 @@
-import { useTheme } from "@react-navigation/native";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
 	Button,
-	HelperText,
 	Switch,
 	TextInput,
-	Text,
-	Title,
+	Appbar,
 	Checkbox,
 	Subheading,
 } from "react-native-paper";
@@ -18,9 +14,7 @@ import Api from "../../network/Api";
 import {
 	RestaurantCategoryModel,
 	RestaurantModel,
-	RestaurantsApi,
 } from "../../network/generated";
-import UserStorage from "../../storage/UserStorage";
 
 export default function AddRestaurantScreen({ navigation }) {
 	const [name, setName] = useState("");
@@ -30,13 +24,8 @@ export default function AddRestaurantScreen({ navigation }) {
 	const [is_making_reservations, setIsReservation] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
-	const [categoriesSet, setCategoriesSet] = useState(new Set<number>());
-	let number = categories.length;
-
-	const [checked, setChecked] = useState(new Array(9).fill(false));
-
-	console.log(number);
-	console.log(checked);
+	const [categoriesNumber, setCategoriesNumber] = useState(new Array());
+	const [checked, setChecked] = useState<boolean[]>([]);
 
 	useEffect(() => {
 		getRestaurantCategories();
@@ -45,8 +34,9 @@ export default function AddRestaurantScreen({ navigation }) {
 	const getRestaurantCategories = async () => {
 		await Api.restaurantsApi
 			.restaurantCategoriesList()
-			.then(async (response) => {
+			.then((response) => {
 				setCategories(response.data.results);
+				setChecked(new Array(response.data.results.length).fill(false));
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -54,13 +44,16 @@ export default function AddRestaurantScreen({ navigation }) {
 			});
 	};
 
-	const onRegisterClicked = async () => {
+	console.log(checked);
+
+	const onAddRestaurantClicked = async () => {
 		if (isLoading) return;
 		setIsLoading(true);
-
-		checked.forEach((el, index) => {
-			if (el) categoriesSet.add(index);
+		checked.map((item, index) => {
+			if (item == true) categoriesNumber.push(index + 1);
 		});
+		setCategoriesNumber(categoriesNumber);
+		console.log(categoriesNumber);
 
 		const request: RestaurantModel = {
 			name,
@@ -68,7 +61,7 @@ export default function AddRestaurantScreen({ navigation }) {
 			longitude,
 			max_number_of_people: parseInt(max_number_of_people),
 			is_making_reservations,
-			categories: categoriesSet,
+			categories: categoriesNumber,
 		};
 
 		await Api.restaurantsApi
@@ -78,6 +71,10 @@ export default function AddRestaurantScreen({ navigation }) {
 			})
 			.catch((error) => {
 				console.error(error.response.data);
+			})
+			.finally(() => {
+				setIsLoading(false);
+				navigation.goBack();
 			});
 	};
 
@@ -103,7 +100,13 @@ export default function AddRestaurantScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Title style={styles.title}>Restaurant</Title>
+			<Appbar.Header>
+				<Appbar.BackAction onPress={() => navigation.goBack()} />
+				<Appbar.Content
+					title="Add Restaurant"
+					subtitle="Write your restaurant's data"
+				/>
+			</Appbar.Header>
 			<View style={styles.form}>
 				<TextInput
 					dense
@@ -147,7 +150,7 @@ export default function AddRestaurantScreen({ navigation }) {
 				<Button
 					style={{ marginTop: 10 }}
 					mode="contained"
-					onPress={onRegisterClicked}
+					onPress={onAddRestaurantClicked}
 					loading={isLoading}
 				>
 					Add restaurant
@@ -160,11 +163,16 @@ export default function AddRestaurantScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: "80%",
 		maxWidth: 500,
 		alignSelf: "center",
+		width: "100%",
 	},
-	form: { flex: 9, justifyContent: "center" },
+	form: {
+		flex: 9,
+		alignSelf: "center",
+		justifyContent: "center",
+		width: "80%",
+	},
 	changeFormButton: { marginBottom: 10 },
 	switch_view: {
 		width: "100%",

@@ -41,7 +41,6 @@ export default function RegisterRestauratorScreen({ navigation }) {
 					setPasswordError(serverResponse.user.password);
 				} else {
 					console.log("Error: " + error.message);
-					navigation.navigate("UserLogin");
 				}
 			})
 			.finally(() => {

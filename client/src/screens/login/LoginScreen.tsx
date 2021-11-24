@@ -1,7 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { Button, HelperText, TextInput, Text } from "react-native-paper";
+import {
+	Button,
+	HelperText,
+	TextInput,
+	Text,
+	Snackbar,
+} from "react-native-paper";
 import Api from "../../network/Api";
 import { SignInModel } from "../../network/generated";
 import UserStorage from "../../storage/UserStorage";
@@ -13,6 +19,9 @@ export default function LoginScreen({ navigation }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [loginError, setLoginError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
+	const [snackMessage, setSnackMessage] = useState("");
+	const [snackVisibility, setSnackVisibility] = useState(false);
+	const [isRestaurantProfile, setIsRestaurantProfile] = useState(false);
 
 	const onLoginClicked = async () => {
 		if (isLoading) return;
@@ -27,12 +36,15 @@ export default function LoginScreen({ navigation }) {
 
 				// move to main screen
 				console.log(response.data);
+
 				if (response.data.is_restaurant_profile == true) {
-					Alert.alert("Logged as restaurant owner");
-					navigation.navigate("MainRestaurantScreen");
+					setIsRestaurantProfile(true);
+					setSnackMessage("Logged as restaurant owner");
+					setSnackVisibility(true);
 				} else {
-					Alert.alert("Logged as app user");
-					navigation.navigate("MainUserScreen");
+					setIsRestaurantProfile(false);
+					setSnackMessage("Logged as app user");
+					setSnackVisibility(true);
 				}
 			})
 			.catch((error: Error) => {
@@ -53,6 +65,13 @@ export default function LoginScreen({ navigation }) {
 			.finally(() => {
 				setIsLoading(false);
 			});
+	};
+
+	const onSnackDismiss = () => {
+		setSnackVisibility(false);
+		if (isRestaurantProfile == true)
+			navigation.navigate("MainRestaurantScreen");
+		else navigation.navigate("MainUserScreen");
 	};
 
 	return (
@@ -137,6 +156,13 @@ export default function LoginScreen({ navigation }) {
 			>
 				Register as restaurator
 			</Button>
+			<Snackbar
+				visible={snackVisibility}
+				onDismiss={onSnackDismiss}
+				duration={1500}
+			>
+				{snackMessage}
+			</Snackbar>
 		</View>
 	);
 }
