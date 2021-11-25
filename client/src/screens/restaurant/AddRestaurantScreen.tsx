@@ -8,7 +8,9 @@ import {
 	Appbar,
 	Checkbox,
 	Subheading,
+	Divider,
 } from "react-native-paper";
+import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
 
 import {
@@ -16,7 +18,9 @@ import {
 	RestaurantModel,
 } from "../../network/generated";
 
-export default function AddRestaurantScreen({ navigation }) {
+export default function AddRestaurantScreen({
+	navigation,
+}: RootStackScreenProps<"AddRestaurant">) {
 	const [name, setName] = useState("");
 	const [latitude, setLatitude] = useState("");
 	const [longitude, setLongitude] = useState("");
@@ -78,7 +82,7 @@ export default function AddRestaurantScreen({ navigation }) {
 			});
 	};
 
-	const handleCheck = (position) => {
+	const handleCheck = (position: any) => {
 		const updateCategories = checked.map((item, index) =>
 			index === position ? !item : item
 		);
@@ -109,6 +113,7 @@ export default function AddRestaurantScreen({ navigation }) {
 			</Appbar.Header>
 			<View style={styles.form}>
 				<TextInput
+					autoComplete="name"
 					dense
 					mode="outlined"
 					label="Name"
@@ -116,6 +121,7 @@ export default function AddRestaurantScreen({ navigation }) {
 					onChangeText={setName}
 				/>
 				<TextInput
+					autoComplete
 					dense
 					mode="outlined"
 					label="Latitude"
@@ -123,6 +129,7 @@ export default function AddRestaurantScreen({ navigation }) {
 					onChangeText={setLatitude}
 				/>
 				<TextInput
+					autoComplete
 					dense
 					mode="outlined"
 					label="Longitude"
@@ -130,6 +137,7 @@ export default function AddRestaurantScreen({ navigation }) {
 					onChangeText={setLongitude}
 				/>
 				<TextInput
+					autoComplete
 					dense
 					mode="outlined"
 					label="Max people count"
@@ -146,9 +154,10 @@ export default function AddRestaurantScreen({ navigation }) {
 						}
 					/>
 				</View>
+				<Divider />
 				<ScrollView>{categoriesCheckBoxes}</ScrollView>
 				<Button
-					style={{ marginTop: 10 }}
+					style={styles.changeFormButton}
 					mode="contained"
 					onPress={onAddRestaurantClicked}
 					loading={isLoading}
@@ -163,7 +172,6 @@ export default function AddRestaurantScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		maxWidth: 500,
 		alignSelf: "center",
 		width: "100%",
 	},
@@ -172,13 +180,16 @@ const styles = StyleSheet.create({
 		alignSelf: "center",
 		justifyContent: "center",
 		width: "80%",
+		maxWidth: 400,
 	},
-	changeFormButton: { marginBottom: 10 },
+	changeFormButton: { marginBottom: 10, marginTop: 10 },
 	switch_view: {
 		width: "100%",
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
+		marginTop: 10,
+		marginBottom: 10,
 	},
 	title: {
 		flex: 1,

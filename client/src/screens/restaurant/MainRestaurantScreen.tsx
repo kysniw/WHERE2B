@@ -12,8 +12,11 @@ import { View, StyleSheet, useColorScheme, RefreshControl } from "react-native";
 import { RestaurantModel } from "../../network/generated";
 import Api from "../../network/Api";
 import UserStorage from "../../storage/UserStorage";
+import { RootStackScreenProps } from "../../../types";
 
-export default function MainRestaurantScreen({ navigation }) {
+export default function MainRestaurantScreen({
+	navigation,
+}: RootStackScreenProps<"MainRestaurantScreen">) {
 	const colorScheme = useColorScheme();
 	const [restaurantsArray, setRestaurantsArray] = useState<RestaurantModel[]>(
 		[]
@@ -26,7 +29,7 @@ export default function MainRestaurantScreen({ navigation }) {
 
 	const getRestaurantList = async () => {
 		await Api.restaurantsApi
-			.restaurantList()
+			.userRestaurantsList()
 			.then((response) => {
 				setRefreshing(false);
 				console.log(response.data.results);
@@ -38,21 +41,24 @@ export default function MainRestaurantScreen({ navigation }) {
 	};
 
 	const restaurantList = restaurantsArray.map(
-		({ name, longitude, latitude, owner }, id) => {
-			if (parseInt(owner) == UserStorage.userId) {
-				return (
-					<Card key={id} style={styles.card}>
-						<Card.Content>
-							<Title>{name}</Title>
-							<Paragraph>Szerogkość: {latitude}</Paragraph>
-							<Paragraph>Wysokość: {longitude}</Paragraph>
-						</Card.Content>
-					</Card>
-				);
-			}
+		({ name, longitude, latitude }, id) => {
+			return (
+				<Card key={id} style={styles.card}>
+					<Card.Title
+						title={name}
+						subtitle={
+							"Szerokość: " + latitude + " Wysokość: " + longitude
+						}
+						subtitleNumberOfLines={2}
+						right={(props) => (
+							<IconButton {...props} icon="delete" />
+						)}
+					/>
+				</Card>
+			);
 		}
 	);
-
+	console.log(restaurantsArray);
 	return (
 		<View style={styles.view}>
 			<Appbar.Header>
@@ -79,7 +85,7 @@ export default function MainRestaurantScreen({ navigation }) {
 					/>
 				}
 			>
-				{restaurantsArray != null ? (
+				{restaurantsArray.length != 0 ? (
 					restaurantList
 				) : (
 					<Paragraph
@@ -89,7 +95,7 @@ export default function MainRestaurantScreen({ navigation }) {
 							marginTop: 20,
 						}}
 					>
-						There will be showed your restaurants
+						There is no restaurant to show
 					</Paragraph>
 				)}
 			</ScrollView>
@@ -112,6 +118,7 @@ const styles = StyleSheet.create({
 		height: "100%",
 	},
 	scrollview: {
+		paddingTop: 10,
 		alignSelf: "center",
 		width: "100%",
 	},
@@ -126,7 +133,9 @@ const styles = StyleSheet.create({
 	card: {
 		marginTop: 5,
 		marginBottom: 5,
-		width: "100%",
+		width: "80%",
+		alignSelf: "center",
+		flexDirection: "row",
 	},
 });
 
