@@ -2,11 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
+import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
 
-import { UsersApi, UserModel, UserProfileModel } from "../../network/generated";
+import { UserModel, UserProfileModel } from "../../network/generated";
 
-export default function RegisterRestauratorScreen({ navigation }) {
+export default function RegisterRestauratorScreen({
+	navigation,
+}: RootStackScreenProps<"RestauratorRegister">) {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -55,6 +58,7 @@ export default function RegisterRestauratorScreen({ navigation }) {
 		<View style={styles.container}>
 			<View style={styles.form}>
 				<TextInput
+					autoComplete="username"
 					dense
 					mode="outlined"
 					label="Username"
@@ -63,6 +67,7 @@ export default function RegisterRestauratorScreen({ navigation }) {
 					left={<TextInput.Icon name="account" />}
 				/>
 				<TextInput
+					autoComplete="email"
 					style={{ marginTop: 10 }}
 					dense
 					mode="outlined"
@@ -74,9 +79,12 @@ export default function RegisterRestauratorScreen({ navigation }) {
 					left={<TextInput.Icon name="email" />}
 				/>
 				{!!emailError && (
-					<HelperText type="error">{emailError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{emailError}
+					</HelperText>
 				)}
 				<TextInput
+					autoComplete="password"
 					style={{ marginTop: emailError ? 0 : 10 }}
 					dense
 					mode="outlined"
@@ -95,7 +103,9 @@ export default function RegisterRestauratorScreen({ navigation }) {
 					}
 				/>
 				{!!passwordError && (
-					<HelperText type="error">{passwordError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{passwordError}
+					</HelperText>
 				)}
 				<Button
 					style={{ marginTop: 10 }}

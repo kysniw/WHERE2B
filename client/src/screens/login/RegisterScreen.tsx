@@ -2,10 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
+import { RootStackScreenProps } from "../../../types";
+import Api from "../../network/Api";
 
-import { UsersApi, UserModel, UserProfileModel } from "../../network/generated";
+import { UserModel, UserProfileModel } from "../../network/generated";
 
-export default function RegisterScreen({ navigation }) {
+export default function RegisterScreen({
+	navigation,
+}: RootStackScreenProps<"UserRegister">) {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -20,7 +24,6 @@ export default function RegisterScreen({ navigation }) {
 		if (isLoading) return;
 		setIsLoading(true);
 
-		const api = new UsersApi(); // api should be injected
 		const user: UserModel = { username, email, password };
 		const request: UserProfileModel = {
 			user,
@@ -28,9 +31,12 @@ export default function RegisterScreen({ navigation }) {
 			last_name: lastName,
 		};
 
-		await api
+		await Api.usersApi
 			.userProfileCreate(request)
-			//.then((_) => move to login form)
+			.then(() => {
+				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
+				navigation.navigate("UserLogin");
+			})
 			.catch((error: Error) => {
 				// this type checking and casting may be not necessary if errors documented in swagger document
 				if (
@@ -50,8 +56,6 @@ export default function RegisterScreen({ navigation }) {
 			})
 			.finally(() => {
 				setIsLoading(false);
-				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
-				navigation.navigate("UserLogin");
 			});
 	};
 
@@ -59,6 +63,7 @@ export default function RegisterScreen({ navigation }) {
 		<View style={styles.container}>
 			<View style={styles.form}>
 				<TextInput
+					autoComplete="username"
 					dense
 					mode="outlined"
 					label="Username"
@@ -67,6 +72,7 @@ export default function RegisterScreen({ navigation }) {
 					left={<TextInput.Icon name="account" />}
 				/>
 				<TextInput
+					autoComplete="email"
 					style={{ marginTop: 10 }}
 					dense
 					mode="outlined"
@@ -78,9 +84,12 @@ export default function RegisterScreen({ navigation }) {
 					left={<TextInput.Icon name="email" />}
 				/>
 				{!!emailError && (
-					<HelperText type="error">{emailError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{emailError}
+					</HelperText>
 				)}
 				<TextInput
+					autoComplete="password"
 					style={{ marginTop: emailError ? 0 : 10 }}
 					dense
 					mode="outlined"
@@ -99,9 +108,12 @@ export default function RegisterScreen({ navigation }) {
 					}
 				/>
 				{!!passwordError && (
-					<HelperText type="error">{passwordError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{passwordError}
+					</HelperText>
 				)}
 				<TextInput
+					autoComplete
 					style={{ marginTop: passwordError ? 0 : 10 }}
 					dense
 					mode="outlined"
@@ -110,6 +122,7 @@ export default function RegisterScreen({ navigation }) {
 					onChangeText={setFirstName}
 				/>
 				<TextInput
+					autoComplete
 					style={{ marginTop: 10 }}
 					dense
 					mode="outlined"

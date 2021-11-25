@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django_filters import rest_framework as filters
+from rest_framework import filters as rest_filters
 
 from .models import RestaurantCategory, Restaurant, Table
 from .serializers import RestaurantCategorySerializer, RestaurantSerializer, TableSerializer
@@ -28,6 +30,8 @@ class RestaurantViewSet(viewsets.ModelViewSet):
 
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    filter_backends = [filters.DjangoFilterBackend, rest_filters.OrderingFilter]
+    filterset_fields = ['categories',]
 
 
 class TableViewSet(viewsets.ModelViewSet):
@@ -35,3 +39,15 @@ class TableViewSet(viewsets.ModelViewSet):
     permission_classes = [IsRestaurantOwner]
     queryset = Table.objects.all()
     serializer_class = TableSerializer
+
+
+class ListUserRestaurantsViewSet(mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+  
+    permission_classes = [HasRestaurantProfile,]
+    serializer_class = RestaurantSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Restaurant.objects.filter(owner=user.restaurantprofile)
+        return queryset

@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import {
 	Button,
@@ -8,11 +9,14 @@ import {
 	Text,
 	Snackbar,
 } from "react-native-paper";
+import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
 import { SignInModel } from "../../network/generated";
 import UserStorage from "../../storage/UserStorage";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({
+	navigation,
+}: RootStackScreenProps<"UserLogin">) {
 	const [login, setLogin] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(true);
@@ -33,7 +37,8 @@ export default function LoginScreen({ navigation }) {
 			.loginTokensCreate(request)
 			.then(async (response) => {
 				await UserStorage.saveData(response.data);
-
+				setLogin("");
+				setPassword("");
 				// move to main screen
 				console.log(response.data);
 
@@ -103,6 +108,7 @@ export default function LoginScreen({ navigation }) {
 					Login with Google
 				</Button>
 				<TextInput
+					autoComplete="email"
 					style={{ marginTop: 30 }}
 					dense
 					mode="outlined"
@@ -112,9 +118,12 @@ export default function LoginScreen({ navigation }) {
 					left={<TextInput.Icon name="email" />}
 				/>
 				{!!loginError && (
-					<HelperText type="error">{loginError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{loginError}
+					</HelperText>
 				)}
 				<TextInput
+					autoComplete="password"
 					style={{ marginTop: loginError ? 0 : 10 }}
 					dense
 					mode="outlined"
@@ -131,7 +140,9 @@ export default function LoginScreen({ navigation }) {
 					}
 				/>
 				{!!passwordError && (
-					<HelperText type="error">{passwordError}</HelperText>
+					<HelperText onPressIn onPressOut type="error">
+						{passwordError}
+					</HelperText>
 				)}
 				<Button
 					style={{ marginTop: passwordError ? 0 : 10 }}
@@ -142,7 +153,9 @@ export default function LoginScreen({ navigation }) {
 					Login
 				</Button>
 			</View>
-			<Text style={styles.text}>Not registered yet?</Text>
+			<Text onPressIn onPressOut style={styles.text}>
+				Not registered yet?
+			</Text>
 			<Button
 				style={styles.changeFormButton}
 				onPress={() => navigation.navigate("UserRegister")}
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: "80%",
-		maxWidth: 500,
+		maxWidth: 400,
 		alignSelf: "center",
 	},
 	text: {

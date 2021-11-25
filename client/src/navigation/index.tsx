@@ -1,6 +1,5 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import useColorScheme from "../../hooks/useColorScheme";
 import {
 	NavigationContainer,
 	DarkTheme,
@@ -13,12 +12,17 @@ import RegisterRestauratorScreen from "../screens/login/RegisterRestauratorScree
 import MainUserScreen from "../screens/user/MainUserScreen";
 import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
 
-export default function Navigation() {
-	const Stack = createNativeStackNavigator();
-	const colorScheme = useColorScheme();
+import { RootStackParamList } from "../../types";
+import LinkingConfig from "./LinkingConfig";
+import { useColorScheme } from "react-native";
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+export default function Navigation() {
+	const colorScheme = useColorScheme();
 	return (
 		<NavigationContainer
+			linking={LinkingConfig}
 			theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
 		>
 			<Stack.Navigator initialRouteName="UserLogin">
@@ -59,8 +63,7 @@ export default function Navigation() {
 					component={MainUserScreen}
 					options={{
 						title: "Panel główny",
-						headerShown: true,
-						headerBackButtonMenuEnabled: false,
+						headerShown: false,
 					}}
 				/>
 				<Stack.Screen
