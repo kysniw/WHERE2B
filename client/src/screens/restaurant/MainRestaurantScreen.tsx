@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useEffect, useState, useRef } from "react";
+import { ScrollView, createNativeWrapper } from "react-native-gesture-handler";
 import {
 	Appbar,
 	IconButton,
@@ -8,11 +8,25 @@ import {
 	Card,
 	Title,
 } from "react-native-paper";
-import { View, StyleSheet, useColorScheme, RefreshControl } from "react-native";
+import {
+	View,
+	StyleSheet,
+	useColorScheme,
+	RefreshControl as RNRefreshControl,
+} from "react-native";
 import { RestaurantModel } from "../../network/generated";
 import Api from "../../network/Api";
 import UserStorage from "../../storage/UserStorage";
 import { RootStackScreenProps } from "../../../types";
+
+const wait = (timeout: any) => {
+	return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
+const RefreshControl = createNativeWrapper(RNRefreshControl, {
+	disallowInterruption: true,
+	shouldCancelWhenOutside: false,
+});
 
 export default function MainRestaurantScreen({
 	navigation,
@@ -21,10 +35,18 @@ export default function MainRestaurantScreen({
 	const [restaurantsArray, setRestaurantsArray] = useState<RestaurantModel[]>(
 		[]
 	);
-	const [refreshing, setRefreshing] = useState(true);
+	const refreshRef = useRef(null);
+
+	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
 		getRestaurantList();
+	}, []);
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+
+		wait(2000).then(() => setRefreshing(false));
 	}, []);
 
 	const getRestaurantList = async () => {
@@ -44,16 +66,14 @@ export default function MainRestaurantScreen({
 		({ name, longitude, latitude }, id) => {
 			return (
 				<Card key={id} style={styles.card}>
-					<Card.Title
-						title={name}
-						subtitle={
-							"Szerokość: " + latitude + " Wysokość: " + longitude
-						}
-						subtitleNumberOfLines={2}
-						right={(props) => (
-							<IconButton {...props} icon="delete" />
-						)}
-					/>
+					<Card.Content>
+						<Title>{name}</Title>
+						<Paragraph>{latitude}</Paragraph>
+						<Paragraph>{longitude}</Paragraph>
+					</Card.Content>
+					<Card.Actions>
+						<IconButton icon="delete" />
+					</Card.Actions>
 				</Card>
 			);
 		}
@@ -77,11 +97,13 @@ export default function MainRestaurantScreen({
 				/>
 			</Appbar.Header>
 			<ScrollView
+				waitFor={refreshRef}
 				style={styles.scrollview}
 				refreshControl={
 					<RefreshControl
+						ref={refreshRef}
 						refreshing={refreshing}
-						onRefresh={getRestaurantList}
+						onRefresh={onRefresh}
 					/>
 				}
 			>
