@@ -6,18 +6,11 @@ import {
 	RefreshControl,
 	ScrollView,
 } from "react-native";
-import {
-	Appbar,
-	IconButton,
-	Paragraph,
-	Colors,
-	Card,
-	Title,
-	Portal,
-	Dialog,
-} from "react-native-paper";
+import { Appbar, IconButton, Paragraph, Colors } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../../types";
+import RestaurantListDetailsDialog from "../../components/RestaurantListDetailsDialog";
+import RestaurantListItemView from "../../components/RestaurantListItemView";
 import Api from "../../network/Api";
 import {
 	RestaurantModel,
@@ -32,11 +25,17 @@ export default function MainRestaurantScreen({
 	const [restaurantsArray, setRestaurantsArray] = useState<RestaurantModel[]>(
 		[]
 	);
-	const [category, setCategories] = useState<RestaurantCategoryModel[]>([]);
-
+	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
 	const [refreshing, setRefreshing] = useState(true);
-	const [dialogVisible, setDialogVisible] = useState(false);
 	const [restaurantObject, setRestaurantObject] = useState<RestaurantModel>();
+	const [dialogVisible, setDialogVisible] = useState(false);
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getRestaurantList();
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getRestaurantCategories();
+	}, []);
 
 	const getRestaurantCategories = async () => {
 		await Api.restaurantsApi
@@ -49,20 +48,6 @@ export default function MainRestaurantScreen({
 				console.log(error.response.data);
 			});
 	};
-
-	const deleteRestuarant = async (id: number) => {
-		await Api.restaurantsApi
-			.restaurantDelete(id)
-			.then(async () => {
-				await getRestaurantList();
-			})
-			.catch((error) => {
-				console.log(error.message);
-				console.log(error.response.data);
-			});
-	};
-
-	console.log(category);
 
 	const getRestaurantList = async () => {
 		setRefreshing(true);
@@ -79,35 +64,34 @@ export default function MainRestaurantScreen({
 			.finally(() => setRefreshing(false));
 	};
 
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		getRestaurantList();
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		getRestaurantCategories();
-	}, []);
+	const showRestaurantDialogDetails = (item: RestaurantModel) => {
+		setRestaurantObject(item);
+		setDialogVisible(true);
+	};
+
+	const deleteRestuarant = async (id: number) => {
+		await Api.restaurantsApi
+			.restaurantDelete(id)
+			.then(async () => {
+				setDialogVisible(false);
+				await getRestaurantList();
+			})
+			.catch((error) => {
+				console.log(error.message);
+				console.log(error.response.data);
+			});
+	};
 
 	const restaurantList = restaurantsArray.map((item) => {
 		return (
-			<Card key={item.id} style={styles.card}>
-				<Card.Content>
-					<Title>{item.name}</Title>
-					<Paragraph>Szerokość: {item.latitude}</Paragraph>
-					<Paragraph>Wysokość: {item.longitude}</Paragraph>
-				</Card.Content>
-				<Card.Actions style={{ flexDirection: "row-reverse" }}>
-					<IconButton
-						icon="arrow-expand"
-						onPress={() => {
-							setRestaurantObject(item);
-							setDialogVisible(true);
-						}}
-					/>
-				</Card.Actions>
-			</Card>
+			<RestaurantListItemView
+				key={item.id}
+				restaurant={item}
+				dialogDetailsAction={showRestaurantDialogDetails}
+			/>
 		);
 	});
 
-	console.log(restaurantsArray);
 	return (
 		<View style={styles.view}>
 			<Appbar.Header>
@@ -125,74 +109,13 @@ export default function MainRestaurantScreen({
 					}
 				/>
 			</Appbar.Header>
-			<Portal>
-				{restaurantObject ? (
-					<Dialog
-						visible={dialogVisible}
-						onDismiss={() => setDialogVisible(false)}
-					>
-						<Dialog.Title onPressIn onPressOut>
-							{restaurantObject.name}
-						</Dialog.Title>
-						<Dialog.Content>
-							<Paragraph>
-								Szerokość: {restaurantObject.latitude}
-							</Paragraph>
-							<Paragraph>
-								Wysokość: {restaurantObject.longitude}
-							</Paragraph>
-							<Paragraph>
-								{restaurantObject.is_making_reservations ===
-								true
-									? "Obsługuje rezerwacje"
-									: "Nie obsługuje rezerwacji"}
-							</Paragraph>
-							<Paragraph>
-								Maksymalna liczba klientów:{" "}
-								{restaurantObject.max_number_of_people}
-							</Paragraph>
-							<Paragraph>Kategorie: </Paragraph>
-							{category.map(({ name }, id) => {
-								return (
-									<View key={id}>
-										{restaurantObject.categories.map(
-											(index) => {
-												if (index === id + 1) {
-													return (
-														<Paragraph key={index}>
-															{name}
-														</Paragraph>
-													);
-												}
-											}
-										)}
-									</View>
-								);
-							})}
-						</Dialog.Content>
-						<Dialog.Actions>
-							<IconButton icon="pencil" />
-							<IconButton
-								icon="delete"
-								onPress={async () => {
-									if (typeof restaurantObject.id === "number")
-										await deleteRestuarant(
-											restaurantObject.id
-										);
-									setDialogVisible(false);
-								}}
-							/>
-						</Dialog.Actions>
-					</Dialog>
-				) : (
-					<Dialog
-						visible={dialogVisible}
-						onDismiss={() => setDialogVisible(false)}
-					>
-						Nothing to show
-					</Dialog>
-				)}
-			</Portal>
+			<RestaurantListDetailsDialog
+				visible={dialogVisible}
+				categories={categories}
+				restaurantObject={restaurantObject}
+				onDeleteRestaurantAction={deleteRestuarant}
+				onDismissAction={() => setDialogVisible(false)}
+			/>
 			<ScrollView
 				style={styles.scrollview}
 				refreshControl={

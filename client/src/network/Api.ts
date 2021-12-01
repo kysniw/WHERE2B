@@ -10,30 +10,28 @@ interface AxiosRequestConfigRetry extends AxiosRequestConfig {
 }
 
 export default abstract class Api {
-	private static _axiosInstance: AxiosInstance = Api.createAxiosInstance();
-	private static _serverApiUrl = `http://156.17.235.165:8000/api`;
-	//private static _serverApiUrl = `http://192.168.204.226:8000/api`;
-	//private static _serverApiUrl = `http://192.168.0.76:8000/api`;
+	public static readonly axiosInstance: AxiosInstance = Api.createAxiosInstance();
+	public static readonly serverApiUrl = `http://156.17.235.165:8000/api`;
 
 	private static _usersApi = new UsersApi(
 		undefined,
-		Api._serverApiUrl,
-		this._axiosInstance
+		Api.serverApiUrl,
+		this.axiosInstance
 	);
 	private static _restaurantsApi = new RestaurantsApi(
 		undefined,
-		Api._serverApiUrl,
-		this._axiosInstance
+		Api.serverApiUrl,
+		this.axiosInstance
 	);
 	private static _bookingsApi = new BookingsApi(
 		undefined,
-		Api._serverApiUrl,
-		this._axiosInstance
+		Api.serverApiUrl,
+		this.axiosInstance
 	);
 	private static _ratingsApi = new RatingsApi(
 		undefined,
-		Api._serverApiUrl,
-		this._axiosInstance
+		Api.serverApiUrl,
+		this.axiosInstance
 	);
 
 	public static get usersApi() {
@@ -53,7 +51,7 @@ export default abstract class Api {
 		const instance = axios.create();
 
 		instance.interceptors.request.use((request) => {
-			console.log(Api._serverApiUrl);
+			console.log(Api.serverApiUrl);
 			const token = UserStorage.accessToken;
 			if (token) {
 				request.headers = {
