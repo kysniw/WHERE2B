@@ -19,7 +19,8 @@
           "modelPackage": "models",
           "removeOperationIdPrefix": true,
           "modelNameSuffix": "Model"
-        }
+        },
+        "typeMappings": "set=Array"
       }
     }
   }
