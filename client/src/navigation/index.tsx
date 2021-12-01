@@ -1,20 +1,20 @@
-import * as React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
 	NavigationContainer,
 	DarkTheme,
 	DefaultTheme,
 } from "@react-navigation/native";
-import LoginScreen from "../screens/login/LoginScreen";
-import RegisterScreen from "../screens/login/RegisterScreen";
-import AddRestaurantScreen from "../screens/restaurant/AddRestaurantScreen";
-import RegisterRestauratorScreen from "../screens/login/RegisterRestauratorScreen";
-import MainUserScreen from "../screens/user/MainUserScreen";
-import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as React from "react";
+import { useColorScheme } from "react-native";
 
 import { RootStackParamList } from "../../types";
+import LoginScreen from "../screens/login/LoginScreen";
+import RegisterRestauratorScreen from "../screens/login/RegisterRestauratorScreen";
+import RegisterScreen from "../screens/login/RegisterScreen";
+import AddRestaurantScreen from "../screens/restaurant/AddRestaurantScreen";
+import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
+import MainUserScreen from "../screens/user/MainUserScreen";
 import LinkingConfig from "./LinkingConfig";
-import { useColorScheme } from "react-native";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

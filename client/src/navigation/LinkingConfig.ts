@@ -4,24 +4,23 @@
  * https://reactnavigation.org/docs/configuring-links
  */
 
- import { LinkingOptions } from "@react-navigation/native";
- import * as Linking from "expo-linking";
- 
- import { RootStackParamList } from "../../types";
- 
- const linking: LinkingOptions<RootStackParamList> = {
-     prefixes: [Linking.makeUrl("/")],
-     config: {
-         screens: {
-             UserLogin: "userlogin",
-             UserRegister: "userregister",
-             RestauratorRegister: "restauratorregister",
-             AddRestaurant: "addrestaurant",
-             MainRestaurantScreen: "mainrestaurantscreen",
-             MainUserScreen: "mainuserscreen"
-         },
-     },
- };
- 
- export default linking;
- 
+import { LinkingOptions } from "@react-navigation/native";
+import * as Linking from "expo-linking";
+
+import { RootStackParamList } from "../../types";
+
+const linking: LinkingOptions<RootStackParamList> = {
+	prefixes: [Linking.makeUrl("/")],
+	config: {
+		screens: {
+			UserLogin: "userlogin",
+			UserRegister: "userregister",
+			RestauratorRegister: "restauratorregister",
+			AddRestaurant: "addrestaurant",
+			MainRestaurantScreen: "mainrestaurantscreen",
+			MainUserScreen: "mainuserscreen",
+		},
+	},
+};
+
+export default linking;
