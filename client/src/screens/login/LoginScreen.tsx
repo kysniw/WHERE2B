@@ -26,7 +26,6 @@ export default function LoginScreen({
 	const [passwordError, setPasswordError] = useState("");
 	const [snackMessage, setSnackMessage] = useState("");
 	const [snackVisibility, setSnackVisibility] = useState(false);
-	const [isRestaurantProfile, setIsRestaurantProfile] = useState(false);
 
 	const onLoginClicked = async () => {
 		if (isLoading) return;
@@ -44,14 +43,12 @@ export default function LoginScreen({
 				console.log(response.data);
 
 				if (response.data.is_restaurant_profile === true) {
-					setIsRestaurantProfile(true);
 					setSnackMessage("Logged as restaurant owner");
-					setSnackVisibility(true);
 				} else {
-					setIsRestaurantProfile(false);
 					setSnackMessage("Logged as app user");
-					setSnackVisibility(true);
 				}
+
+				setSnackVisibility(true);
 			})
 			.catch((error: Error) => {
 				// this type checking and casting may be not necessary if errors documented in swagger document
@@ -75,7 +72,7 @@ export default function LoginScreen({
 
 	const onSnackDismiss = () => {
 		setSnackVisibility(false);
-		if (isRestaurantProfile === true)
+		if (UserStorage.isRestaurantProfile)
 			navigation.navigate("MainRestaurantScreen");
 		else navigation.navigate("MainUserScreen");
 	};
