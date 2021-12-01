@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
+
 import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
-
 import { UserModel, UserProfileModel } from "../../network/generated";
 
 export default function RegisterRestauratorScreen({
