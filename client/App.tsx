@@ -4,21 +4,21 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "react-native-url-polyfill/auto";
 
-import UserStorage from "./src/storage/UserStorage";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./src/navigation";
+import UserStorage from "./src/storage/UserStorage";
 
 export default function App() {
 	const isLoadingComplete = useCachedResources();
 
 	useEffect(() => {
-		async function loadUserDataFromStorage() {
-			await UserStorage.loadSavedData();
-		}
-
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		loadUserDataFromStorage();
 	}, []);
+
+	async function loadUserDataFromStorage() {
+		await UserStorage.loadSavedData();
+	}
 
 	if (!isLoadingComplete) {
 		return null;

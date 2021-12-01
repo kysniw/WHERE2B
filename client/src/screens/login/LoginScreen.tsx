@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as React from "react";
 import { useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet } from "react-native";
 import {
 	Button,
 	HelperText,
@@ -9,6 +9,7 @@ import {
 	Text,
 	Snackbar,
 } from "react-native-paper";
+
 import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
 import { SignInModel } from "../../network/generated";
@@ -42,7 +43,7 @@ export default function LoginScreen({
 				// move to main screen
 				console.log(response.data);
 
-				if (response.data.is_restaurant_profile == true) {
+				if (response.data.is_restaurant_profile === true) {
 					setIsRestaurantProfile(true);
 					setSnackMessage("Logged as restaurant owner");
 					setSnackVisibility(true);
@@ -74,7 +75,7 @@ export default function LoginScreen({
 
 	const onSnackDismiss = () => {
 		setSnackVisibility(false);
-		if (isRestaurantProfile == true)
+		if (isRestaurantProfile === true)
 			navigation.navigate("MainRestaurantScreen");
 		else navigation.navigate("MainUserScreen");
 	};

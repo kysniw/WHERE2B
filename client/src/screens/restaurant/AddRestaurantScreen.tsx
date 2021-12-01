@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
 	Button,
@@ -10,9 +10,9 @@ import {
 	Subheading,
 	Divider,
 } from "react-native-paper";
+
 import { RootStackScreenProps } from "../../../types";
 import Api from "../../network/Api";
-
 import {
 	RestaurantCategoryModel,
 	RestaurantModel,
@@ -28,7 +28,7 @@ export default function AddRestaurantScreen({
 	const [is_making_reservations, setIsReservation] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
-	const [categoriesNumber, setCategoriesNumber] = useState(new Array());
+	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
 
 	useEffect(() => {
@@ -54,7 +54,7 @@ export default function AddRestaurantScreen({
 		if (isLoading) return;
 		setIsLoading(true);
 		checked.map((item, index) => {
-			if (item == true) categoriesNumber.push(index + 1);
+			if (item === true) categoriesNumber.push(index + 1);
 		});
 		setCategoriesNumber(categoriesNumber);
 		console.log(categoriesNumber);
@@ -63,14 +63,14 @@ export default function AddRestaurantScreen({
 			name,
 			latitude,
 			longitude,
-			max_number_of_people: parseInt(max_number_of_people),
+			max_number_of_people: parseInt(max_number_of_people, 10),
 			is_making_reservations,
 			categories: categoriesNumber,
 		};
 
 		await Api.restaurantsApi
 			.restaurantCreate(request)
-			.then(async (response) => {
+			.then((response) => {
 				console.log(response.data);
 			})
 			.catch((error) => {
@@ -82,7 +82,7 @@ export default function AddRestaurantScreen({
 			});
 	};
 
-	const handleCheck = (position: any) => {
+	const handleCheck = (position: number) => {
 		const updateCategories = checked.map((item, index) =>
 			index === position ? !item : item
 		);
@@ -125,6 +125,7 @@ export default function AddRestaurantScreen({
 					dense
 					mode="outlined"
 					label="Latitude"
+					keyboardType="numeric"
 					value={latitude}
 					onChangeText={setLatitude}
 				/>
@@ -133,6 +134,7 @@ export default function AddRestaurantScreen({
 					dense
 					mode="outlined"
 					label="Longitude"
+					keyboardType="numeric"
 					value={longitude}
 					onChangeText={setLongitude}
 				/>
