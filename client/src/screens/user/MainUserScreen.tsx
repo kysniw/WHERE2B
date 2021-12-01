@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, useColorScheme, RefreshControl } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import {
+	View,
+	StyleSheet,
+	useColorScheme,
+	RefreshControl,
+	ScrollView,
+} from "react-native";
 import { Chip, Appbar, Divider, List } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../../types";
