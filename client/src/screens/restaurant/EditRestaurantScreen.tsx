@@ -35,10 +35,10 @@ export default function EditRestaurantScreen({
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
-	const [categoriesNumber, setCategoriesNumber] = useState<number[]>(
-		route.params.restaurant.categories
-	);
+	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
+
+	console.log(route.params.restaurant.categories);
 
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -50,7 +50,17 @@ export default function EditRestaurantScreen({
 			.restaurantCategoriesList()
 			.then((response) => {
 				setCategories(response.data.results);
-				setChecked(new Array(response.data.results.length).fill(false));
+				setChecked(
+					new Array<boolean>(response.data.results.length)
+						.fill(false)
+						.map((item, index) =>
+							route.params.restaurant.categories.includes(
+								index + 1
+							) === true
+								? !item
+								: item
+						)
+				);
 			})
 			.catch((error) => {
 				console.log(error.message);
