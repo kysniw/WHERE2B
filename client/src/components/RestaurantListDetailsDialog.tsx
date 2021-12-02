@@ -8,6 +8,7 @@ interface Props {
 	visible: boolean;
 	restaurantObject: RestaurantModel | undefined;
 	categories: RestaurantCategoryModel[];
+	onEditRestaurantAction: () => void;
 	onDeleteRestaurantAction?: (id: number) => Promise<void>;
 	onDismissAction: () => void;
 }
@@ -49,7 +50,10 @@ export default function RestaurantListDetailsDialog(props: Props) {
 					</Dialog.Content>
 					{UserStorage.isRestaurantProfile && (
 						<Dialog.Actions>
-							<IconButton icon="pencil" />
+							<IconButton
+								icon="pencil"
+								onPress={props.onEditRestaurantAction}
+							/>
 							<IconButton
 								icon="delete"
 								onPress={async () => {

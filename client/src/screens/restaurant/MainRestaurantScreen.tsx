@@ -125,6 +125,13 @@ export default function MainRestaurantScreen({
 				visible={dialogVisible}
 				categories={categories}
 				restaurantObject={restaurantObject}
+				onEditRestaurantAction={() => {
+					setDialogVisible(false);
+					if (typeof restaurantObject !== "undefined")
+						navigation.navigate("EditRestaurant", {
+							restaurant: restaurantObject,
+						});
+				}}
 				onDeleteRestaurantAction={deleteRestuarant}
 				onDismissAction={() => setDialogVisible(false)}
 			/>
