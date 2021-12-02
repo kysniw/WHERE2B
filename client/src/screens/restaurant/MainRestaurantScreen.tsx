@@ -31,6 +31,18 @@ export default function MainRestaurantScreen({
 	const [dialogVisible, setDialogVisible] = useState(false);
 
 	useEffect(() => {
+		const getProfileInfo = async () => {
+			await Api.usersApi
+				.restaurantProfileRead(UserStorage.userId.toString())
+				.then((response) => {
+					console.log(response.data);
+				})
+				.catch((error) => {
+					console.log(error.message);
+				});
+		};
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getProfileInfo();
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		getRestaurantList();
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -53,9 +65,9 @@ export default function MainRestaurantScreen({
 		setRefreshing(true);
 
 		await Api.restaurantsApi
-			.restaurantList()
+			.userRestaurantsList()
 			.then((response) => {
-				console.log(response.data.results);
+				//	console.log(response.data.results);
 				setRestaurantsArray(response.data.results);
 			})
 			.catch((error) => {

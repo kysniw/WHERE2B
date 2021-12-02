@@ -73,14 +73,13 @@ export default function AddRestaurantScreen({
 		await Api.restaurantsApi
 			.restaurantCreate(request)
 			.then((response) => {
+				setIsLoading(false);
+				navigation.goBack();
 				console.log(response.data);
 			})
 			.catch((error) => {
-				console.error(error.response.data);
-			})
-			.finally(() => {
 				setIsLoading(false);
-				navigation.goBack();
+				console.error(error.response.data);
 			});
 	};
 
