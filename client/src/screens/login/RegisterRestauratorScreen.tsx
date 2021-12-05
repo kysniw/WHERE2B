@@ -30,11 +30,13 @@ export default function RegisterRestauratorScreen({
 		await Api.usersApi
 			.restaurantProfileCreate(request)
 			.then((response) => {
+				setIsLoading(false);
 				console.log(response.data);
 				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
 				navigation.navigate("UserLogin");
 			})
 			.catch((error: Error) => {
+				setIsLoading(false);
 				if (
 					axios.isAxiosError(error) &&
 					error.response?.status === 400
@@ -48,9 +50,6 @@ export default function RegisterRestauratorScreen({
 				} else {
 					console.log("Error: " + error.message);
 				}
-			})
-			.finally(() => {
-				setIsLoading(false);
 			});
 	};
 

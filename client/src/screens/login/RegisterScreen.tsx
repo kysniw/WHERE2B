@@ -34,10 +34,12 @@ export default function RegisterScreen({
 		await Api.usersApi
 			.userProfileCreate(request)
 			.then(() => {
+				setIsLoading(false);
 				Alert.alert("Zostałeś poprawnie zarejestrowany! Zaloguj się");
 				navigation.navigate("UserLogin");
 			})
 			.catch((error: Error) => {
+				setIsLoading(false);
 				// this type checking and casting may be not necessary if errors documented in swagger document
 				if (
 					axios.isAxiosError(error) &&
@@ -53,9 +55,6 @@ export default function RegisterScreen({
 					console.log("Error: " + error.message);
 					navigation.navigate("UserLogin");
 				}
-			})
-			.finally(() => {
-				setIsLoading(false);
 			});
 	};
 

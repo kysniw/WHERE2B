@@ -12,6 +12,7 @@ import LoginScreen from "../screens/login/LoginScreen";
 import RegisterRestauratorScreen from "../screens/login/RegisterRestauratorScreen";
 import RegisterScreen from "../screens/login/RegisterScreen";
 import AddRestaurantScreen from "../screens/restaurant/AddRestaurantScreen";
+import EditRestaurantScreen from "../screens/restaurant/EditRestaurantScreen";
 import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
 import MainUserScreen from "../screens/user/MainUserScreen";
 import LinkingConfig from "./LinkingConfig";
@@ -53,6 +54,14 @@ export default function Navigation() {
 				<Stack.Screen
 					name="AddRestaurant"
 					component={AddRestaurantScreen}
+					options={{
+						title: "Dodawanie danych restauracji",
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="EditRestaurant"
+					component={EditRestaurantScreen}
 					options={{
 						title: "Dodawanie danych restauracji",
 						headerShown: false,

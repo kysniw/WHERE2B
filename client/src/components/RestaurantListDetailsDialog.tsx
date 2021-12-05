@@ -1,5 +1,11 @@
 import React from "react";
-import { Dialog, IconButton, Paragraph, Portal } from "react-native-paper";
+import {
+	Colors,
+	Dialog,
+	IconButton,
+	Paragraph,
+	Portal,
+} from "react-native-paper";
 
 import { RestaurantCategoryModel, RestaurantModel } from "../network/generated";
 import UserStorage from "../storage/UserStorage";
@@ -8,6 +14,7 @@ interface Props {
 	visible: boolean;
 	restaurantObject: RestaurantModel | undefined;
 	categories: RestaurantCategoryModel[];
+	onEditRestaurantAction: () => void;
 	onDeleteRestaurantAction?: (id: number) => Promise<void>;
 	onDismissAction: () => void;
 }
@@ -15,7 +22,7 @@ interface Props {
 export default function RestaurantListDetailsDialog(props: Props) {
 	const renderCategories = props.categories
 		.filter((x) => props.restaurantObject?.categories.includes(x.id!))
-		.map((item) => <Paragraph key={item.name}>{item.name}</Paragraph>);
+		.map((item) => <Paragraph key={item.id}>{item.name}</Paragraph>);
 
 	return (
 		<Portal>
@@ -49,8 +56,12 @@ export default function RestaurantListDetailsDialog(props: Props) {
 					</Dialog.Content>
 					{UserStorage.isRestaurantProfile && (
 						<Dialog.Actions>
-							<IconButton icon="pencil" />
 							<IconButton
+								icon="pencil"
+								onPress={props.onEditRestaurantAction}
+							/>
+							<IconButton
+								color={Colors.red700}
 								icon="delete"
 								onPress={async () => {
 									if (

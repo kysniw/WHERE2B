@@ -5,6 +5,8 @@
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import { RestaurantModel } from "./src/network/generated";
+
 declare global {
 	// eslint-disable-next-line @typescript-eslint/no-namespace
 	namespace ReactNavigation {
@@ -18,6 +20,7 @@ export type RootStackParamList = {
 	UserRegister: undefined;
 	RestauratorRegister: undefined;
 	AddRestaurant: undefined;
+	EditRestaurant: { restaurant: RestaurantModel };
 	MainUserScreen: undefined;
 	MainRestaurantScreen: undefined;
 };

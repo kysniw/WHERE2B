@@ -18,18 +18,27 @@ import {
 	RestaurantModel,
 } from "../../network/generated";
 
-export default function AddRestaurantScreen({
+export default function EditRestaurantScreen({
+	route,
 	navigation,
-}: RootStackScreenProps<"AddRestaurant">) {
-	const [name, setName] = useState("");
-	const [latitude, setLatitude] = useState("");
-	const [longitude, setLongitude] = useState("");
-	const [max_number_of_people, setMaxNumber] = useState("");
-	const [is_making_reservations, setIsReservation] = useState(false);
+}: RootStackScreenProps<"EditRestaurant">) {
+	const [name, setName] = useState(route.params.restaurant.name);
+	const [latitude, setLatitude] = useState(route.params.restaurant.latitude);
+	const [longitude, setLongitude] = useState(
+		route.params.restaurant.longitude
+	);
+	const [max_number_of_people, setMaxNumber] = useState(
+		route.params.restaurant.max_number_of_people?.toString()
+	);
+	const [is_making_reservations, setIsReservation] = useState(
+		route.params.restaurant.is_making_reservations
+	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
 	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
+
+	console.log(route.params.restaurant.categories);
 
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -41,7 +50,17 @@ export default function AddRestaurantScreen({
 			.restaurantCategoriesList()
 			.then((response) => {
 				setCategories(response.data.results);
-				setChecked(new Array(response.data.results.length).fill(false));
+				setChecked(
+					new Array<boolean>(response.data.results.length)
+						.fill(false)
+						.map((item, index) =>
+							route.params.restaurant.categories.includes(
+								index + 1
+							) === true
+								? !item
+								: item
+						)
+				);
 			})
 			.catch((error) => {
 				console.log(error.message);
@@ -51,7 +70,7 @@ export default function AddRestaurantScreen({
 
 	console.log(checked);
 
-	const onAddRestaurantClicked = async () => {
+	const onEditRestaurantClicked = async () => {
 		if (isLoading) return;
 		setIsLoading(true);
 
@@ -61,26 +80,34 @@ export default function AddRestaurantScreen({
 		setCategoriesNumber(categoriesNumber);
 		console.log(categoriesNumber);
 
+		let max_number_of_people_int = 0;
+
+		if (typeof max_number_of_people === "string")
+			max_number_of_people_int = parseInt(max_number_of_people, 10);
+		else if (typeof max_number_of_people === "number")
+			max_number_of_people_int = max_number_of_people;
+
 		const request: RestaurantModel = {
 			name,
 			latitude,
 			longitude,
-			max_number_of_people: parseInt(max_number_of_people, 10),
+			max_number_of_people: max_number_of_people_int,
 			is_making_reservations,
 			categories: categoriesNumber,
 		};
-
-		await Api.restaurantsApi
-			.restaurantCreate(request)
-			.then((response) => {
-				setIsLoading(false);
-				console.log(response.data);
-				navigation.goBack();
-			})
-			.catch((error) => {
-				setIsLoading(false);
-				console.error(error.response.data);
-			});
+		if (typeof route.params.restaurant.id === "number") {
+			await Api.restaurantsApi
+				.restaurantUpdate(route.params.restaurant.id, request)
+				.then((response) => {
+					setIsLoading(false);
+					console.log(response.data);
+					navigation.goBack();
+				})
+				.catch((error) => {
+					setIsLoading(false);
+					console.error(error.response.data);
+				});
+		}
 	};
 
 	const handleCheck = (position: number) => {
@@ -162,10 +189,10 @@ export default function AddRestaurantScreen({
 				<Button
 					style={styles.changeFormButton}
 					mode="contained"
-					onPress={onAddRestaurantClicked}
+					onPress={onEditRestaurantClicked}
 					loading={isLoading}
 				>
-					Add restaurant
+					Edit restaurant
 				</Button>
 			</View>
 		</View>

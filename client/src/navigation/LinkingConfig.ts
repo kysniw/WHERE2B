@@ -17,6 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
 			UserRegister: "userregister",
 			RestauratorRegister: "restauratorregister",
 			AddRestaurant: "addrestaurant",
+			EditRestaurant: "editrestaurant",
 			MainRestaurantScreen: "mainrestaurantscreen",
 			MainUserScreen: "mainuserscreen",
 		},
