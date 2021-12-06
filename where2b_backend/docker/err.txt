@@ -1,0 +1,11 @@
+Removing intermediate container 774b9b55a0df
+ ---> 94604a0e98d6
+Step 6/6 : CMD ["/bin/sh", "-c", "echo 'IT'S ECHOED"]
+ ---> Running in f06d51b481ff
+Removing intermediate container f06d51b481ff
+ ---> 75b0dae72e59
+Successfully built 75b0dae72e59
+Successfully tagged docker_w2b_recommendations:latest
+Building w2b_celery
+ERROR: Cannot locate specified Dockerfile: Dockerfile
+make: *** [Makefile:2: build] Error 1
