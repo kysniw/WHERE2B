@@ -25,11 +25,11 @@ class RestaurantViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            permission_classes = [IsAuthenticated, IsRestaurantProfile]
+            permission_classes = [IsAuthenticated, HasRestaurantProfile]
         elif self.action == 'list':
             permission_classes = [AllowAny]
         else:
-            permission_classes = [IsRestaurantProfile, IsRestaurantOwner]
+            permission_classes = [HasRestaurantProfile, IsRestaurantOwner]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
@@ -49,3 +49,15 @@ class TableViewSet(viewsets.ModelViewSet):
     permission_classes = [IsRestaurantOwner]
     queryset = Table.objects.all()
     serializer_class = TableSerializer
+
+
+class ListUserRestaurantsViewSet(mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+  
+    permission_classes = [HasRestaurantProfile,]
+    serializer_class = RestaurantSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Restaurant.objects.filter(owner=user.restaurantprofile)
+        return queryset
