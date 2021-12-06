@@ -5,7 +5,12 @@ from django_filters import rest_framework as filters
 from rest_framework import filters as rest_filters
 
 from .models import RestaurantCategory, Restaurant, Table
-from .serializers import RestaurantCategorySerializer, RestaurantSerializer, TableSerializer
+from .serializers import (
+    RestaurantCategorySerializer,
+    RestaurantSerializer,
+    TableSerializer,
+    ListRestaurantSerializer
+)
 from .permissions import IsRestaurantOwner
 from users.permissions import HasRestaurantProfile
 
@@ -15,7 +20,6 @@ class ListRestaurantCategoriesViewSet(mixins.ListModelMixin,
   
     serializer_class = RestaurantCategorySerializer
     queryset = RestaurantCategory.objects.all()
-
 
 class RestaurantViewSet(viewsets.ModelViewSet):
 
@@ -28,10 +32,16 @@ class RestaurantViewSet(viewsets.ModelViewSet):
             permission_classes = [HasRestaurantProfile, IsRestaurantOwner]
         return [permission() for permission in permission_classes]
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ListRestaurantSerializer
+        else:
+            return RestaurantSerializer
+
     queryset = Restaurant.objects.all()
-    serializer_class = RestaurantSerializer
     filter_backends = [filters.DjangoFilterBackend, rest_filters.OrderingFilter]
-    filterset_fields = ['categories',]
+    filterset_fields = ['categories', ]
+    ordering_fields = ['predicted_rating', ]
 
 
 class TableViewSet(viewsets.ModelViewSet):

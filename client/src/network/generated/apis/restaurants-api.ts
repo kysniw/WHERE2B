@@ -154,12 +154,14 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {string} [categories] 
+         * @param {string} [ordering] Which field to use when ordering the results.
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurantList: async (categories?: string, ordering?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/restaurants/restaurant/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -174,6 +176,14 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (categories !== undefined) {
+                localVarQueryParameter['categories'] = categories;
+            }
+
+            if (ordering !== undefined) {
+                localVarQueryParameter['ordering'] = ordering;
+            }
 
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;
@@ -550,6 +560,48 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userRestaurantsList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/restaurants/user-restaurants/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -593,13 +645,15 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} [categories] 
+         * @param {string} [ordering] Which field to use when ordering the results.
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurantList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantListResponseModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantList(limit, offset, options);
+        async restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantList(categories, ordering, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -697,6 +751,17 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.tableUpdate(id, data, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userRestaurantsList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userRestaurantsList(limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -737,13 +802,15 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {string} [categories] 
+         * @param {string} [ordering] Which field to use when ordering the results.
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantList(limit?: number, offset?: number, options?: any): AxiosPromise<RestaurantListResponseModel> {
-            return localVarFp.restaurantList(limit, offset, options).then((request) => request(axios, basePath));
+        restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: any): AxiosPromise<RestaurantListResponseModel> {
+            return localVarFp.restaurantList(categories, ordering, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -831,6 +898,16 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         tableUpdate(id: number, data: TableModel, options?: any): AxiosPromise<TableModel> {
             return localVarFp.tableUpdate(id, data, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userRestaurantsList(limit?: number, offset?: number, options?: any): AxiosPromise<RestaurantListResponseModel> {
+            return localVarFp.userRestaurantsList(limit, offset, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -877,14 +954,16 @@ export class RestaurantsApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} [categories] 
+     * @param {string} [ordering] Which field to use when ordering the results.
      * @param {number} [limit] Number of results to return per page.
      * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
      */
-    public restaurantList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
-        return RestaurantsApiFp(this.configuration).restaurantList(limit, offset, options).then((request) => request(this.axios, this.basePath));
+    public restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantList(categories, ordering, limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -989,5 +1068,17 @@ export class RestaurantsApi extends BaseAPI {
      */
     public tableUpdate(id: number, data: TableModel, options?: AxiosRequestConfig) {
         return RestaurantsApiFp(this.configuration).tableUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public userRestaurantsList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).userRestaurantsList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 }

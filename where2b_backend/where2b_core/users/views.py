@@ -17,7 +17,7 @@ from .serializers import (
 	ResponseTokenRefreshSerializer
 )
 from .permissions import IsSelf
-from .utils import is_restaurant
+from .utils import has_restaurantprofile
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -71,7 +71,7 @@ class DecoratedTokenObtainPairWithIdView(TokenObtainPairView):
 			'user_id': user.id,
 		    'refresh': str(refresh),
 		    'access': str(refresh.access_token),
-		    'is_restaurant_profile': is_restaurant(user)
+		    'is_restaurant_profile': has_restaurantprofile(user)
 		}
 
 		serializer = ResponseTokensSerializer(data=data)
