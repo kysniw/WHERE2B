@@ -12,4 +12,5 @@ class IsBookingCreatorOrIsRestaurant(BasePermission):
 		if request.user == obj.user.user:
 			return not obj.is_finished
 		else:
-			return request.user == obj.restaurant.user
+			restaurant_owner = obj.table.restaurant.owner
+			return request.user == restaurant_owner.user

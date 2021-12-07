@@ -15,6 +15,6 @@ class Booking(models.Model):
 	is_finished = models.BooleanField(default=False, null=False, blank=False)
 
 	def save(self, *args, **kwargs):
-		self.lower_date = self.date - timedelta(hours=2)
-		self.upper_date = self.date + timedelta(hours=2)
+		self.lower_date = self.date - timedelta(hours=1, minutes=30)
+		self.upper_date = self.date + timedelta(hours=1, minutes=30)
 		super(Booking, self).save(*args, **kwargs)
