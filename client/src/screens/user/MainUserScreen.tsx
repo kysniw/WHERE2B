@@ -139,6 +139,16 @@ export default function MainUserScreen({
 		setSelectedCategories(newSelected);
 	};
 
+	const goToMakeReservationScreen = () => {
+		setDialogVisible(false);
+
+		if (restaurantObject) {
+			navigation.navigate("MakeReservationScreen", {
+				restaurant: restaurantObject,
+			});
+		}
+	};
+
 	const renderCategories = categories.map((value, index) => (
 		<Chip
 			style={styles.categoryItem}
@@ -299,9 +309,7 @@ export default function MainUserScreen({
 				categories={categories}
 				restaurantObject={restaurantObject}
 				onDismissAction={() => setDialogVisible(false)}
-				onEditRestaurantAction={function (): void {
-					throw new Error("Function not implemented.");
-				}}
+				onMakeReservationAction={goToMakeReservationScreen}
 			/>
 		</View>
 	);

@@ -23,6 +23,7 @@ export type RootStackParamList = {
 	EditRestaurant: { restaurant: RestaurantModel };
 	MainUserScreen: undefined;
 	MainRestaurantScreen: undefined;
+	MakeReservationScreen: { restaurant: RestaurantModel };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
