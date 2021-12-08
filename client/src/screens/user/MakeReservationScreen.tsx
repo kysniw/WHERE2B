@@ -1,6 +1,12 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Alert } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Text,
+	Alert,
+	ListRenderItemInfo,
+} from "react-native";
 import { Calendar } from "react-native-calendars";
 import { MarkingProps } from "react-native-calendars/src/calendar/day/marking";
 import { DateData } from "react-native-calendars/src/types";
@@ -29,10 +35,12 @@ export default function MakeReservationScreen({
 	>([]);
 	const [selectedTables, setSelectedTables] =
 		useState<AvailableTablesModel | null>(null);
+	const [errors, setErrors] = useState<string[]>([]);
 
 	const handleDayClicked = async (clickedDay: DateData) => {
 		setSelectedTables(null);
 		setAvailableTables([]);
+		setErrors([]);
 		await fetchAvailableSeats(clickedDay.dateString);
 
 		const newDates = { ...markedDates };
@@ -56,16 +64,16 @@ export default function MakeReservationScreen({
 			.listAvailableSeatsRead(
 				dateQuery,
 				peopleCount.toString(),
-				(route.params?.restaurant?.id ?? 1).toString()
+				route.params.restaurant.id!.toString()
 			)
 			.then((response) => {
-				console.log(response.config.url);
 				const data = response.data as unknown as AvailableTablesModel[]; // swagger document not properly defined
 				setAvailableTables(data);
 			})
 			.catch((error) => {
-				console.log(error.message);
-				console.log(error.response.data);
+				if (error.response.status === 400 && error.response.data) {
+					setErrors(error.response.data as string[]);
+				}
 			});
 	};
 
@@ -103,15 +111,34 @@ export default function MakeReservationScreen({
 		);
 	};
 
+	const renderHourItem = ({
+		item,
+	}: ListRenderItemInfo<AvailableTablesModel>) => (
+		<Button
+			mode="outlined"
+			onPress={() => setSelectedTables(item)}
+			disabled={!isEnoughPlaces(item)}
+			style={
+				!isEnoughPlaces(item)
+					? styles.hoursNotAvailable
+					: item === selectedTables
+					? styles.hourSelected
+					: styles.hours
+			}
+		>
+			{moment(item.date).format("HH:mm")}
+		</Button>
+	);
+
+	const renderErrors = errors.map((x, index) => <Text key={index}>{x}</Text>);
+
 	return (
 		<View style={styles.view}>
 			<Appbar.Header>
+				<Appbar.BackAction onPress={() => navigation.goBack()} />
 				<Appbar.Content
 					title="Make reservation"
-					subtitle={
-						route.params?.restaurant?.name ??
-						"Dummy restaurant name"
-					}
+					subtitle={route.params.restaurant.name}
 				/>
 				<Appbar.Action
 					icon="logout"
@@ -131,31 +158,16 @@ export default function MakeReservationScreen({
 				markedDates={markedDates}
 			/>
 
-			<FlatList
-				style={styles.hoursList}
-				horizontal
-				data={availableTables}
-				keyExtractor={(_, index) => index.toString()}
-				renderItem={({ item }) => {
-					const typedItem = item as AvailableTablesModel;
-					return (
-						<Button
-							mode="outlined"
-							onPress={() => setSelectedTables(typedItem)}
-							disabled={!isEnoughPlaces(typedItem)}
-							style={
-								!isEnoughPlaces(typedItem)
-									? styles.hoursNotAvailable
-									: typedItem === selectedTables
-									? styles.hourSelected
-									: styles.hours
-							}
-						>
-							{moment(item.date as string).format("HH:mm")}
-						</Button>
-					);
-				}}
-			/>
+			{errors.length === 0 && (
+				<FlatList
+					style={styles.hoursList}
+					horizontal
+					data={availableTables}
+					keyExtractor={(_, index) => index.toString()}
+					renderItem={renderHourItem}
+				/>
+			)}
+			{renderErrors}
 
 			<Text style={{ alignSelf: "center" }}>Number of people</Text>
 			<View style={styles.peopleContainer}>
