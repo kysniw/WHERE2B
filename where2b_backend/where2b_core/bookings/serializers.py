@@ -38,6 +38,18 @@ class UpdateBookingSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
+class ReadBookingSerializer(serializers.ModelSerializer):
+
+	restaurant = serializers.SerializerMethodField()
+
+	def get_restaurant(self, obj) -> int:
+		return obj.table.restaurant.id
+
+	class Meta:
+		model = Booking
+		fields = '__all__'
+
+
 class AvailableTablesSerializer(serializers.Serializer):
 
 	date = serializers.DateTimeField()

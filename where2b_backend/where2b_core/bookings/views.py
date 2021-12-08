@@ -8,10 +8,14 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from django.db.models import Q
 import pytz
+from rest_framework.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
+
 
 from .models import Booking
-from .serializers import BookingSerializer, CreateBookingSerializer, UpdateBookingSerializer, AvailableTablesSerializer
-from restaurants.models import Restaurant, Table
+from .serializers import BookingSerializer, CreateBookingSerializer, UpdateBookingSerializer, AvailableTablesSerializer, ReadBookingSerializer
+from restaurants.models import Restaurant, Table, OpeningHours
 from restaurants.permissions import IsRestaurantOwner
 from .permissions import IsBookingCreatorOrIsRestaurant
 from restaurants.serializers import TableSerializer
@@ -57,11 +61,11 @@ class BookingsViewSet(viewsets.GenericViewSet,
 			return BookingSerializer
 
 
-class ListBookingsView(generics.GenericAPIView):
+class ListRestaurateurBookingsView(generics.GenericAPIView):
 
 	permission_classes = [IsRestaurantOwner]
 	serializer_class = BookingSerializer
-	queryset = Booking.objects.all()
+	queryset = Booking.objects.filter(is_finished=False)
 
 	def get(self, request, restaurant_id):
 		restaurant = get_object_or_404(Restaurant, id=restaurant_id)
@@ -70,6 +74,18 @@ class ListBookingsView(generics.GenericAPIView):
 		serializer = BookingSerializer(bookings, many=True)
 		return Response(serializer.data)
 
+
+class ListUserBookingsView(generics.GenericAPIView):
+
+	permission_classes = [IsAuthenticated, HasUserProfile]
+	serializer_class = ReadBookingSerializer
+	queryset = Booking.objects.filter(is_finished=False)
+
+	def get(self, request):
+		user = request.user
+		bookings = self.queryset.filter(user__user=user)
+		serializer = ReadBookingSerializer(bookings, many=True)
+		return Response(serializer.data)
 
 class ListAvailableSeatsView(generics.GenericAPIView):
 
@@ -80,27 +96,49 @@ class ListAvailableSeatsView(generics.GenericAPIView):
 	def get(self, request, restaurant_id, date, people_count):
 		
 		date = datetime.strptime(date, '%Y-%m-%dT%H:%M')
-		date = date.replace(second=0, microsecond=0, minute=0, hour=date.hour)
+		date = pytz.utc.localize(date)
+
+		if date < timezone.now():
+			raise ValidationError(_('Date must be an upcoming date.'))
+
+		weekday = date.weekday() + 1
+
+		opening_hours = OpeningHours.objects.filter(restaurant=restaurant_id, weekday=weekday)
+		if not opening_hours:
+			raise ValidationError(_('This restaurant is closed on this day.')) 
+
+		opening_hours = opening_hours.first()
+		open_from = opening_hours.open_from
+		open_till = opening_hours.open_till
+		open_till = date.replace(second=0, microsecond=0, minute=open_till.minute, hour=open_till.hour) - timedelta(hours=1, minutes=30)
+
+		if date.hour < open_from.hour:
+			start_hour = date.replace(second=0, microsecond=0, minute=open_from.minute, hour=open_from.hour)
+			start_hour = start_hour + timedelta(minutes=30)
+			if start_hour.minute > 30:
+				start_hour = start_hour.replace(minute=30)
+			else:
+				start_hour = start_hour.replace(minute=0)
+		else:
+			start_hour = date.replace(second=0, microsecond=0, minute=0, hour=date.hour)
+
             
 		tables_dates = []
 
-
 		def get_available_tables(restaurant_id, booking_date, people_count):
 
-			lower_date = booking_date - timedelta(hours=1, minutes=30)	
+			# lower_date = booking_date - timedelta(hours=1, minutes=30)	
 			upper_date = booking_date + timedelta(hours=1, minutes=30)	
 
-			lower_date = pytz.utc.localize(lower_date)
-			upper_date = pytz.utc.localize(upper_date)
+			# lower_date = pytz.utc.localize(lower_date)
+			# upper_date = pytz.utc.localize(upper_date)
 
 			bookings = Booking.objects.select_related('table').filter(
-				(Q(lower_date__gte=lower_date) & Q(upper_date__gte=upper_date) & Q(lower_date__lte=upper_date))
-				| (Q(lower_date__lte=lower_date) & Q(upper_date__lte=upper_date) & Q(upper_date__gte=lower_date))
-				| (Q(lower_date__lte=lower_date) & Q(upper_date__gte=upper_date))
-				| (Q(lower_date__gte=lower_date) & Q(upper_date__lte=upper_date)))
+				(Q(date__gte=booking_date) & Q(upper_date__gte=upper_date) & Q(date__lte=upper_date))
+				| (Q(date__lte=booking_date) & Q(upper_date__lte=upper_date) & Q(upper_date__gte=booking_date))
+				| (Q(date__lte=booking_date) & Q(upper_date__gte=upper_date))
+				| (Q(date__gte=booking_date) & Q(date__lte=upper_date)))
 			
-			print(f'DATE {booking_date}, bookings: {len(bookings)}')
-
 			booked_tables = [booking.table.id for booking in bookings if not booking.is_finished]
 			tables = Table.objects.filter(restaurant=restaurant_id, number_of_seats__gte=people_count,
 				number_of_seats__lte=people_count+5).exclude(id__in=booked_tables)
@@ -125,12 +163,12 @@ class ListAvailableSeatsView(generics.GenericAPIView):
 
 			# return []
 
-
-		for i in range(1, 10):
-			current_date = date + timedelta(minutes=i*30)
-			available_tables = get_available_tables(restaurant_id, current_date, people_count)
-			table_date = {'date': current_date, 'tables': available_tables}
+		booking_date = start_hour	
+		while booking_date <= open_till:	
+			available_tables = get_available_tables(restaurant_id, booking_date, people_count)
+			table_date = {'date': booking_date, 'tables': available_tables}
 			tables_dates.append(table_date)
+			booking_date = booking_date + timedelta(minutes=30)
 
 		serializer = AvailableTablesSerializer(tables_dates, many=True)
 		return Response(serializer.data)
