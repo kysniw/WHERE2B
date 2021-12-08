@@ -1,3 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
 	View,
@@ -6,7 +9,15 @@ import {
 	RefreshControl,
 	ScrollView,
 } from "react-native";
-import { Chip, Appbar, Divider, List } from "react-native-paper";
+import MapView, { Marker, Callout } from "react-native-maps";
+import {
+	Chip,
+	Appbar,
+	Divider,
+	List,
+	Paragraph,
+	FAB,
+} from "react-native-paper";
 
 import { RootStackScreenProps } from "../../../types";
 import RestaurantListDetailsDialog from "../../components/RestaurantListDetailsDialog";
@@ -31,12 +42,42 @@ export default function MainUserScreen({
 	const [restaurantObject, setRestaurantObject] = useState<RestaurantModel>();
 	const [dialogVisible, setDialogVisible] = useState(false);
 
+	const [location, setLocation] = useState({
+		latitude: 0,
+		longitude: 0,
+		latitudeDelta: 0.003,
+		longitudeDelta: 0.003,
+	});
+
 	useEffect(() => {
+		console.log(location);
+		setRegion(location);
+	}, [location]);
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getLocation();
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		loadCategories();
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		loadRestaurants();
 	}, []);
+
+	const getLocation = async () => {
+		await Location.requestForegroundPermissionsAsync().then((response) => {
+			if (!response.granted) {
+				console.log("brak pozwolenia");
+			}
+		});
+		await Location.getCurrentPositionAsync({}).then((response) => {
+			setLocation({
+				latitude: response.coords.latitude,
+				longitude: response.coords.longitude,
+				latitudeDelta: location.latitudeDelta,
+				longitudeDelta: location.longitudeDelta,
+			});
+		});
+	};
 
 	const loadCategories = async () => {
 		await Api.restaurantsApi
@@ -76,16 +117,26 @@ export default function MainUserScreen({
 			.finally(() => setRefreshing(false));
 	};
 
+	const showRestaurantDialogDetails = (item: RestaurantModel) => {
+		setRestaurantObject(item);
+		setDialogVisible(true);
+	};
+
+	const renderRestaurants = restaurants.map((item) => {
+		return (
+			<RestaurantListItemView
+				key={item.id}
+				restaurant={item}
+				dialogDetailsAction={showRestaurantDialogDetails}
+			/>
+		);
+	});
+
 	const toogleChecked = (categoryIndex: number) => {
 		const newSelected = selectedCategories.map((value, index) =>
 			index === categoryIndex ? !value : value
 		);
 		setSelectedCategories(newSelected);
-	};
-
-	const showRestaurantDialogDetails = (item: RestaurantModel) => {
-		setRestaurantObject(item);
-		setDialogVisible(true);
 	};
 
 	const renderCategories = categories.map((value, index) => (
@@ -99,14 +150,41 @@ export default function MainUserScreen({
 		</Chip>
 	));
 
-	const renderRestaurants = restaurants.map((item) => {
+	const renderRestaurantsMarkers = restaurants.map((item) => {
 		return (
-			<RestaurantListItemView
+			<Marker
 				key={item.id}
-				restaurant={item}
-				dialogDetailsAction={showRestaurantDialogDetails}
-			/>
+				title={item.name}
+				coordinate={{
+					latitude: parseFloat(item.latitude!),
+					longitude: parseFloat(item.longitude!),
+				}}
+				pinColor="red"
+				onCalloutPress={() => {
+					showRestaurantDialogDetails(item);
+				}}
+			>
+				<Callout>
+					<View>
+						<Paragraph style={styles.black_text}>
+							{item.name}
+						</Paragraph>
+						<Paragraph style={styles.black_text}>
+							Kliknij, aby przejść do szczegółów
+						</Paragraph>
+					</View>
+				</Callout>
+			</Marker>
 		);
+	});
+
+	const Tab = createBottomTabNavigator();
+
+	const [region, setRegion] = useState({
+		latitude: location.latitude,
+		longitude: location.longitude,
+		latitudeDelta: 0.01,
+		longitudeDelta: 0.01,
 	});
 
 	return (
@@ -145,23 +223,85 @@ export default function MainUserScreen({
 			</List.Accordion>
 			<Divider />
 
-			<ScrollView
-				style={styles.scrollview}
-				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={loadRestaurants}
-					/>
-				}
-			>
-				{renderRestaurants}
-			</ScrollView>
+			<Tab.Navigator>
+				<Tab.Screen
+					name="Lista wyników"
+					children={() => {
+						return (
+							<ScrollView
+								style={styles.scrollview}
+								refreshControl={
+									<RefreshControl
+										refreshing={refreshing}
+										onRefresh={loadRestaurants}
+									/>
+								}
+							>
+								{renderRestaurants}
+							</ScrollView>
+						);
+					}}
+					options={{
+						tabBarLabel: "Lista",
+						headerShown: false,
+						tabBarIcon: ({ color, size }) => (
+							<Ionicons name="list" color={color} size={size} />
+						),
+					}}
+				/>
+				<Tab.Screen
+					name="Znaczniki na mapie"
+					children={() => {
+						return (
+							<View style={styles.container}>
+								<MapView
+									style={styles.map}
+									region={region}
+									onRegionChangeComplete={(region) =>
+										setRegion(region)
+									}
+									showsUserLocation={true}
+								>
+									{renderRestaurantsMarkers}
+								</MapView>
+								{/*Display user's current region:*/}
+								<Paragraph style={styles.text}>
+									Current latitude: {region.latitude}
+								</Paragraph>
+								<Paragraph style={styles.text}>
+									Current longitude: {region.longitude}
+								</Paragraph>
+								<FAB
+									style={styles.iconbutton}
+									icon="refresh"
+									onPress={loadRestaurants}
+									disabled={refreshing}
+								/>
+							</View>
+						);
+					}}
+					options={{
+						tabBarLabel: "Mapa",
+						headerShown: false,
+						tabBarIcon: ({ color, size }) => (
+							<Ionicons
+								name="map-outline"
+								color={color}
+								size={size}
+							/>
+						),
+					}}
+				/>
+			</Tab.Navigator>
 
 			<RestaurantListDetailsDialog
 				visible={dialogVisible}
 				categories={categories}
 				restaurantObject={restaurantObject}
 				onDismissAction={() => setDialogVisible(false)}
+				onEditRestaurantAction={function (): void {
+					throw new Error("Function not implemented.");
+				}}
 			/>
 		</View>
 	);
@@ -171,6 +311,11 @@ const styles = StyleSheet.create({
 	view: {
 		height: "100%",
 		flexDirection: "column",
+	},
+	iconbutton: {
+		position: "absolute",
+		left: 20,
+		bottom: 20,
 	},
 	scrollview: {
 		paddingTop: 10,
@@ -201,5 +346,20 @@ const styles = StyleSheet.create({
 	categoryItem: {
 		marginVertical: 2,
 		marginHorizontal: 4,
+	},
+	container: {
+		...StyleSheet.absoluteFillObject,
+		flex: 1,
+		justifyContent: "flex-end",
+		alignItems: "center",
+	},
+	map: {
+		...StyleSheet.absoluteFillObject,
+	},
+	text: {
+		color: "#fff",
+	},
+	black_text: {
+		color: "#000",
 	},
 });

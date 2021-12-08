@@ -21,6 +21,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { AvailableTablesModel } from '../models';
+// @ts-ignore
 import { BookingModel } from '../models';
 // @ts-ignore
 import { CreateBookingModel } from '../models';
@@ -376,7 +378,7 @@ export const BookingsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listAvailableSeatsRead(date: string, peopleCount: string, restaurantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookingModel>> {
+        async listAvailableSeatsRead(date: string, peopleCount: string, restaurantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AvailableTablesModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.listAvailableSeatsRead(date, peopleCount, restaurantId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -455,7 +457,7 @@ export const BookingsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listAvailableSeatsRead(date: string, peopleCount: string, restaurantId: string, options?: any): AxiosPromise<BookingModel> {
+        listAvailableSeatsRead(date: string, peopleCount: string, restaurantId: string, options?: any): AxiosPromise<AvailableTablesModel> {
             return localVarFp.listAvailableSeatsRead(date, peopleCount, restaurantId, options).then((request) => request(axios, basePath));
         },
         /**

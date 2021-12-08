@@ -21,6 +21,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
+import { ListRestaurantListResponseModel } from '../models';
+// @ts-ignore
 import { RestaurantCategoryListResponseModel } from '../models';
 // @ts-ignore
 import { RestaurantListResponseModel } from '../models';
@@ -652,7 +654,7 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantListResponseModel>> {
+        async restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRestaurantListResponseModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantList(categories, ordering, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -809,7 +811,7 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: any): AxiosPromise<RestaurantListResponseModel> {
+        restaurantList(categories?: string, ordering?: string, limit?: number, offset?: number, options?: any): AxiosPromise<ListRestaurantListResponseModel> {
             return localVarFp.restaurantList(categories, ordering, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**

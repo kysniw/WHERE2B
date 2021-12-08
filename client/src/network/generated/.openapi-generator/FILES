@@ -10,10 +10,13 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/available-tables-model.ts
 models/booking-model.ts
 models/create-booking-model.ts
 models/create-rating-model.ts
 models/index.ts
+models/list-restaurant-list-response-model.ts
+models/list-restaurant-model.ts
 models/rating-model.ts
 models/read-rating-list-response-model.ts
 models/read-rating-model.ts
