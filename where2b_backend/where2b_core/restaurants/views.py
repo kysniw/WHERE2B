@@ -6,8 +6,10 @@ from rest_framework import filters as rest_filters
 from rest_framework.response import Response
 from django.db import transaction
 from rest_framework import status
+from rest_framework import generics
+from django.shortcuts import get_object_or_404
 
-from .models import RestaurantCategory, Restaurant, Table, OpeningHours
+from .models import RestaurantCategory, Restaurant, Table, OpeningHours, RestaurantPhoto
 from .serializers import (
     RestaurantCategorySerializer,
     RestaurantSerializer,
@@ -17,6 +19,7 @@ from .serializers import (
 )
 from .permissions import IsRestaurantOwner
 from users.permissions import HasRestaurantProfile
+from .responses import ImageResponse
 
 
 class ListRestaurantCategoriesViewSet(mixins.ListModelMixin,
@@ -122,3 +125,13 @@ class ListUserRestaurantsViewSet(mixins.ListModelMixin,
         user = self.request.user
         queryset = Restaurant.objects.filter(owner=user.restaurantprofile)
         return queryset
+
+
+
+class GetImageView(generics.GenericAPIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        restaurant_photo = get_object_or_404(RestaurantPhoto, pk=pk)
+        return ImageResponse(restaurant_photo.image)

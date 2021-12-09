@@ -6,7 +6,8 @@ from .views import (
 	RestaurantViewSet,
 	TableViewSet,
 	ListUserRestaurantsViewSet,
-	OpeningHoursViewSet
+	OpeningHoursViewSet,
+	GetImageView
 )
 
 router = routers.SimpleRouter()
@@ -17,5 +18,6 @@ router.register(r'user-restaurants', ListUserRestaurantsViewSet, basename='user-
 router.register(r'opening-hours', OpeningHoursViewSet, basename='opening-hours')
 
 urlpatterns = [
-	path('', include(router.urls))
+	path('', include(router.urls)),
+	path('restaurant-photo-image/<int:pk>', GetImageView.as_view(), name='restaurant-photo-image')
 ]

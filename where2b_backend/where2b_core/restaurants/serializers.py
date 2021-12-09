@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from django.db import transaction
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, reverse
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-from .models import RestaurantCategory, Restaurant, Table, OpeningHours
+from .models import RestaurantCategory, Restaurant, Table, OpeningHours, RestaurantPhoto
 from recommendations.models import Recommendation
 from ratings.models import Rating
 from django.db.models import Avg
@@ -35,7 +35,22 @@ class OpeningHoursSerializer(serializers.ModelSerializer):
 
         return data
 
+
+class RestaurantPhotoSerializer(serializers.ModelSerializer):
+
+    image_url = serializers.SerializerMethodField(required=False)
+
+    def get_image_url(self, obj):
+        return reverse('restaurants:restaurant-photo-image', args=[obj.id])
+
+    class Meta:
+        model = RestaurantPhoto
+        fields = ['restaurant', 'image_url']
+
+
 class RestaurantSerializer(serializers.ModelSerializer):
+
+    photos = RestaurantPhotoSerializer(many=True, required=False) 
 
     @transaction.atomic
     def create(self, validated_data):
@@ -88,3 +103,4 @@ class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
         fields = '__all__'
+

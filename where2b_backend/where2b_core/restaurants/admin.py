@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RestaurantCategory, Restaurant, Table, OpeningHours
+from .models import RestaurantCategory, Restaurant, Table, OpeningHours, RestaurantPhoto
 
 
 class OpeningHoursAdmin(admin.TabularInline):
@@ -8,8 +8,11 @@ class OpeningHoursAdmin(admin.TabularInline):
 class TableAdmin(admin.TabularInline):
    model = Table
 
+class RestaurantPhotoAdmin(admin.TabularInline):
+   model = RestaurantPhoto
+
 class RestaurantAdmin(admin.ModelAdmin):
-   inlines = [OpeningHoursAdmin, TableAdmin]
+   inlines = [OpeningHoursAdmin, TableAdmin, RestaurantPhotoAdmin]
    filter_horizontal = ['categories',]
 
 
