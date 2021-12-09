@@ -141,9 +141,9 @@ CELERY_BROKER_URL = "redis://w2b_redis:6379"
 CELERY_RESULT_BACKEND = "redis://w2b_redis:6379"
 
 
-CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
-        "task": "recommendations.tasks.sample_task",
-        "schedule": crontab(minute="*/1"),
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     "sample_task": {
+#         "task": "recommendations.tasks.sample_task",
+#         "schedule": crontab(minute="*/1"),
+#     },
+# }

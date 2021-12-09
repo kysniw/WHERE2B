@@ -38,4 +38,4 @@ w2b-core-test:
 w2b-recommendations-test:
 	docker exec -ti where2b_recommendations /bin/sh -c "python3 manage.py test"
 recommender:
-	docker exec -ti where2b_core /bin/sh -c "python3 manage.py shell < recommender.py"
+	docker exec -ti where2b_recommendations /bin/sh -c "python3 manage.py shell < recommender.py"

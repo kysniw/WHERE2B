@@ -1,12 +1,3 @@
-
-
-from restaurants.models import RestaurantCategory, Restaurant
-from users.models import CustomUser, UserProfile, RestaurantProfile
-from ratings.models import Rating
-
-
-
-
 import pandas as pd
 from scipy import sparse
 from scipy.spatial.distance import cosine
@@ -61,6 +52,7 @@ def get_predictions(ratings_df, similarity_df, user):
 	filled_ratings_df = ratings_df.apply(lambda row: row.fillna(row.mean()), axis=1)
 
 	neighbours = get_neighbours(similarity_df, user)
+	print(neighbours)
 	neighbours_similarities = similarity_df.loc[user, neighbours]
 	neighbours_ratings = filled_ratings_df.loc[neighbours, not_rated]
 	
@@ -69,16 +61,18 @@ def get_predictions(ratings_df, similarity_df, user):
 
 
 data = {
-	'user': [1, 1, 1, 2, 2, 2, 3, 3, 3 ,4, 4, 5, 5, 5, 1, 2, 1, 2],
-	'restaurant': [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 1, 2, 3, 4, 4, 5, 5],
-	'rating': [5, 4, 3, 4, 4, 1, 1, 1, 5, 5, 1, 4, 4, 2, 4, 5, 4, 3]
+	'user': [1, 1, 1, 2, 2, 2, 3, 3, 3 ,4, 4, 5, 5, 5, 1, 2, 1, 2, 6, 6, 6],
+	'restaurant': [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 1, 2, 3, 4, 4, 5, 5, 1, 2, 3],
+	'rating': [5, 4, 3, 4, 4, 1, 1, 1, 5, 5, 1, 4, 4, 2, 4, 5, 4, 3, 4, 5, 3]
 }
 
 
 ratings_df, norm_ratings_df = get_ratings_df(data)
-
 similarity_df = get_similarity_df(norm_ratings_df)
 user = 5
 score = get_predictions(ratings_df, similarity_df, user)
 
+
+print(ratings_df)
+print(similarity_df)
 print(score)

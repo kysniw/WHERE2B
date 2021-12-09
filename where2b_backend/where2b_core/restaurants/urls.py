@@ -6,6 +6,7 @@ from .views import (
 	RestaurantViewSet,
 	TableViewSet,
 	ListUserRestaurantsViewSet,
+	OpeningHoursViewSet
 )
 
 router = routers.SimpleRouter()
@@ -13,6 +14,7 @@ router.register(r'restaurant-categories', ListRestaurantCategoriesViewSet, basen
 router.register(r'restaurant', RestaurantViewSet, basename='restaurant')
 router.register(r'table', TableViewSet, basename='table')
 router.register(r'user-restaurants', ListUserRestaurantsViewSet, basename='user-restaurants')
+router.register(r'opening-hours', OpeningHoursViewSet, basename='opening-hours')
 
 urlpatterns = [
 	path('', include(router.urls))

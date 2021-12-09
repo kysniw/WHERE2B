@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.db import transaction
+from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
-from .models import RestaurantCategory, Restaurant, Table
+from .models import RestaurantCategory, Restaurant, Table, OpeningHours
 from recommendations.models import Recommendation
 from ratings.models import Rating
 from django.db.models import Avg
@@ -14,6 +17,23 @@ class RestaurantCategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name',]
         read_only_fields = ['id',]
 
+
+class OpeningHoursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpeningHours
+        fields = '__all__'
+        read_only_fields = ['id',]
+
+    def validate(self, data):
+
+        request = self.context['request']
+        user = request.user
+        restaurant = data['restaurant']
+
+        if not restaurant.owner.user == user:
+            raise ValidationError(_("You must be owner of restaurant to modify it's opening hours."))
+
+        return data
 
 class RestaurantSerializer(serializers.ModelSerializer):
 
