@@ -28,6 +28,11 @@ class Restaurant(models.Model):
 		return self.name
 
 
+class RestaurantPhoto(models.Model):
+	image = models.ImageField(null=False, blank=False)
+	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='photos', null=False, blank=False)
+
+
 WEEKDAYS = [
   (1, _("Monday")),
   (2, _("Tuesday")),
