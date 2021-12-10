@@ -37,12 +37,6 @@ export interface BookingModel {
      * @type {string}
      * @memberof BookingModel
      */
-    'lower_date'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingModel
-     */
     'upper_date'?: string | null;
     /**
      * 

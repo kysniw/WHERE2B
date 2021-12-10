@@ -17,49 +17,55 @@
 /**
  * 
  * @export
- * @interface UpdateBookingModel
+ * @interface ReadBookingModel
  */
-export interface UpdateBookingModel {
+export interface ReadBookingModel {
     /**
      * 
      * @type {number}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'id'?: number;
     /**
      * 
+     * @type {number}
+     * @memberof ReadBookingModel
+     */
+    'restaurant'?: number;
+    /**
+     * 
      * @type {string}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'date': string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'upper_date'?: string | null;
     /**
      * 
      * @type {boolean}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'is_accepted'?: boolean;
     /**
      * 
      * @type {boolean}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'is_finished'?: boolean;
     /**
      * 
      * @type {number}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'table': number;
     /**
      * 
      * @type {string}
-     * @memberof UpdateBookingModel
+     * @memberof ReadBookingModel
      */
     'user': string;
 }

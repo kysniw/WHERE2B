@@ -27,6 +27,8 @@ import { BookingModel } from '../models';
 // @ts-ignore
 import { CreateBookingModel } from '../models';
 // @ts-ignore
+import { ReadBookingListResponseModel } from '../models';
+// @ts-ignore
 import { UpdateBookingModel } from '../models';
 /**
  * BookingsApi - axios parameter creator
@@ -278,10 +280,10 @@ export const BookingsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listBookingsRead: async (restaurantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurateurBookingsRead: async (restaurantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'restaurantId' is not null or undefined
-            assertParamExists('listBookingsRead', 'restaurantId', restaurantId)
-            const localVarPath = `/bookings/list-bookings/{restaurant_id}/`
+            assertParamExists('restaurateurBookingsRead', 'restaurantId', restaurantId)
+            const localVarPath = `/bookings/restaurateur-bookings/{restaurant_id}/`
                 .replace(`{${"restaurant_id"}}`, encodeURIComponent(String(restaurantId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -296,6 +298,48 @@ export const BookingsApiAxiosParamCreator = function (configuration?: Configurat
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userBookingsList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/bookings/user-bookings/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -388,8 +432,19 @@ export const BookingsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listBookingsRead(restaurantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookingModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listBookingsRead(restaurantId, options);
+        async restaurateurBookingsRead(restaurantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookingModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurateurBookingsRead(restaurantId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userBookingsList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReadBookingListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userBookingsList(limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -466,8 +521,18 @@ export const BookingsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listBookingsRead(restaurantId: string, options?: any): AxiosPromise<BookingModel> {
-            return localVarFp.listBookingsRead(restaurantId, options).then((request) => request(axios, basePath));
+        restaurateurBookingsRead(restaurantId: string, options?: any): AxiosPromise<BookingModel> {
+            return localVarFp.restaurateurBookingsRead(restaurantId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userBookingsList(limit?: number, offset?: number, options?: any): AxiosPromise<ReadBookingListResponseModel> {
+            return localVarFp.userBookingsList(limit, offset, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -556,7 +621,19 @@ export class BookingsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof BookingsApi
      */
-    public listBookingsRead(restaurantId: string, options?: AxiosRequestConfig) {
-        return BookingsApiFp(this.configuration).listBookingsRead(restaurantId, options).then((request) => request(this.axios, this.basePath));
+    public restaurateurBookingsRead(restaurantId: string, options?: AxiosRequestConfig) {
+        return BookingsApiFp(this.configuration).restaurateurBookingsRead(restaurantId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsApi
+     */
+    public userBookingsList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return BookingsApiFp(this.configuration).userBookingsList(limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 }

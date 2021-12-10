@@ -17,7 +17,11 @@ models/create-rating-model.ts
 models/index.ts
 models/list-restaurant-list-response-model.ts
 models/list-restaurant-model.ts
+models/opening-hours-list-response-model.ts
+models/opening-hours-model.ts
 models/rating-model.ts
+models/read-booking-list-response-model.ts
+models/read-booking-model.ts
 models/read-rating-list-response-model.ts
 models/read-rating-model.ts
 models/response-token-refresh-model.ts
@@ -26,6 +30,7 @@ models/restaurant-category-list-response-model.ts
 models/restaurant-category-model.ts
 models/restaurant-list-response-model.ts
 models/restaurant-model.ts
+models/restaurant-photo-model.ts
 models/restaurant-profile-list-response-model.ts
 models/restaurant-profile-model.ts
 models/sign-in-model.ts

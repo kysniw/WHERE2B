@@ -13,6 +13,7 @@
  */
 
 
+import { RestaurantPhotoModel } from './restaurant-photo-model';
 
 /**
  * 
@@ -26,6 +27,12 @@ export interface RestaurantModel {
      * @memberof RestaurantModel
      */
     'id'?: number;
+    /**
+     * 
+     * @type {Array<RestaurantPhotoModel>}
+     * @memberof RestaurantModel
+     */
+    'photos'?: Array<RestaurantPhotoModel>;
     /**
      * Name
      * @type {string}

@@ -23,6 +23,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { ListRestaurantListResponseModel } from '../models';
 // @ts-ignore
+import { OpeningHoursListResponseModel } from '../models';
+// @ts-ignore
+import { OpeningHoursModel } from '../models';
+// @ts-ignore
 import { RestaurantCategoryListResponseModel } from '../models';
 // @ts-ignore
 import { RestaurantListResponseModel } from '../models';
@@ -38,6 +42,211 @@ import { TableModel } from '../models';
  */
 export const RestaurantsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursCreate: async (data: OpeningHoursModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('openingHoursCreate', 'data', data)
+            const localVarPath = `/restaurants/opening-hours/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('openingHoursDelete', 'id', id)
+            const localVarPath = `/restaurants/opening-hours/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} [restaurant] 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursList: async (restaurant?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/restaurants/opening-hours/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (restaurant !== undefined) {
+                localVarQueryParameter['restaurant'] = restaurant;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursPartialUpdate: async (id: number, data: OpeningHoursModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('openingHoursPartialUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('openingHoursPartialUpdate', 'data', data)
+            const localVarPath = `/restaurants/opening-hours/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursUpdate: async (id: number, data: OpeningHoursModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('openingHoursUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('openingHoursUpdate', 'data', data)
+            const localVarPath = `/restaurants/opening-hours/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {number} [limit] Number of results to return per page.
@@ -250,6 +459,42 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoImageRead: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('restaurantPhotoImageRead', 'id', id)
+            const localVarPath = `/restaurants/restaurant-photo-image/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} id A unique integer value identifying this restaurant.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -402,12 +647,13 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {string} [restaurant] 
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tableList: async (limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        tableList: async (restaurant?: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/restaurants/table/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -422,6 +668,10 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (restaurant !== undefined) {
+                localVarQueryParameter['restaurant'] = restaurant;
+            }
 
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;
@@ -478,42 +728,6 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id A unique integer value identifying this table.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        tableRead: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('tableRead', 'id', id)
-            const localVarPath = `/restaurants/table/{id}/`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -616,6 +830,60 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async openingHoursCreate(data: OpeningHoursModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OpeningHoursModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.openingHoursCreate(data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async openingHoursDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.openingHoursDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} [restaurant] 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async openingHoursList(restaurant?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OpeningHoursListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.openingHoursList(restaurant, limit, offset, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async openingHoursPartialUpdate(id: number, data: OpeningHoursModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OpeningHoursModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.openingHoursPartialUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async openingHoursUpdate(id: number, data: OpeningHoursModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OpeningHoursModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.openingHoursUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
@@ -671,6 +939,16 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async restaurantPhotoImageRead(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoImageRead(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} id A unique integer value identifying this restaurant.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -712,13 +990,14 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} [restaurant] 
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async tableList(limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableListResponseModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.tableList(limit, offset, options);
+        async tableList(restaurant?: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tableList(restaurant, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -730,16 +1009,6 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
          */
         async tablePartialUpdate(id: number, data: TableModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.tablePartialUpdate(id, data, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id A unique integer value identifying this table.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async tableRead(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TableModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.tableRead(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -774,6 +1043,55 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
 export const RestaurantsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = RestaurantsApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursCreate(data: OpeningHoursModel, options?: any): AxiosPromise<OpeningHoursModel> {
+            return localVarFp.openingHoursCreate(data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.openingHoursDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} [restaurant] 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursList(restaurant?: string, limit?: number, offset?: number, options?: any): AxiosPromise<OpeningHoursListResponseModel> {
+            return localVarFp.openingHoursList(restaurant, limit, offset, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursPartialUpdate(id: number, data: OpeningHoursModel, options?: any): AxiosPromise<OpeningHoursModel> {
+            return localVarFp.openingHoursPartialUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this opening hours.
+         * @param {OpeningHoursModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        openingHoursUpdate(id: number, data: OpeningHoursModel, options?: any): AxiosPromise<OpeningHoursModel> {
+            return localVarFp.openingHoursUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {number} [limit] Number of results to return per page.
@@ -826,6 +1144,15 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoImageRead(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.restaurantPhotoImageRead(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} id A unique integer value identifying this restaurant.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -863,13 +1190,14 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {string} [restaurant] 
          * @param {number} [limit] Number of results to return per page.
          * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tableList(limit?: number, offset?: number, options?: any): AxiosPromise<TableListResponseModel> {
-            return localVarFp.tableList(limit, offset, options).then((request) => request(axios, basePath));
+        tableList(restaurant?: string, limit?: number, offset?: number, options?: any): AxiosPromise<TableListResponseModel> {
+            return localVarFp.tableList(restaurant, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -880,15 +1208,6 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
          */
         tablePartialUpdate(id: number, data: TableModel, options?: any): AxiosPromise<TableModel> {
             return localVarFp.tablePartialUpdate(id, data, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id A unique integer value identifying this table.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        tableRead(id: number, options?: any): AxiosPromise<TableModel> {
-            return localVarFp.tableRead(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -920,6 +1239,65 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class RestaurantsApi extends BaseAPI {
+    /**
+     * 
+     * @param {OpeningHoursModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public openingHoursCreate(data: OpeningHoursModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).openingHoursCreate(data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this opening hours.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public openingHoursDelete(id: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).openingHoursDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} [restaurant] 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public openingHoursList(restaurant?: string, limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).openingHoursList(restaurant, limit, offset, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this opening hours.
+     * @param {OpeningHoursModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public openingHoursPartialUpdate(id: number, data: OpeningHoursModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).openingHoursPartialUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this opening hours.
+     * @param {OpeningHoursModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public openingHoursUpdate(id: number, data: OpeningHoursModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).openingHoursUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {number} [limit] Number of results to return per page.
@@ -982,6 +1360,17 @@ export class RestaurantsApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public restaurantPhotoImageRead(id: string, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantPhotoImageRead(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {number} id A unique integer value identifying this restaurant.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1027,14 +1416,15 @@ export class RestaurantsApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} [restaurant] 
      * @param {number} [limit] Number of results to return per page.
      * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
      */
-    public tableList(limit?: number, offset?: number, options?: AxiosRequestConfig) {
-        return RestaurantsApiFp(this.configuration).tableList(limit, offset, options).then((request) => request(this.axios, this.basePath));
+    public tableList(restaurant?: string, limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).tableList(restaurant, limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1047,17 +1437,6 @@ export class RestaurantsApi extends BaseAPI {
      */
     public tablePartialUpdate(id: number, data: TableModel, options?: AxiosRequestConfig) {
         return RestaurantsApiFp(this.configuration).tablePartialUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} id A unique integer value identifying this table.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RestaurantsApi
-     */
-    public tableRead(id: number, options?: AxiosRequestConfig) {
-        return RestaurantsApiFp(this.configuration).tableRead(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
