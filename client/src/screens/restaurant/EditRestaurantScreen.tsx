@@ -135,7 +135,7 @@ export default function EditRestaurantScreen({
 			<Appbar.Header>
 				<Appbar.BackAction onPress={() => navigation.goBack()} />
 				<Appbar.Content
-					title="Add Restaurant"
+					title="Edit Restaurant"
 					subtitle="Write your restaurant's data"
 				/>
 			</Appbar.Header>

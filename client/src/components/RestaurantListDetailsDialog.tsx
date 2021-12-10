@@ -14,8 +14,9 @@ interface Props {
 	visible: boolean;
 	restaurantObject: RestaurantModel | undefined;
 	categories: RestaurantCategoryModel[];
-	onEditRestaurantAction: () => void;
+	onEditRestaurantAction?: () => void;
 	onDeleteRestaurantAction?: (id: number) => Promise<void>;
+	onMakeReservationAction?: () => void;
 	onDismissAction: () => void;
 }
 
@@ -73,6 +74,20 @@ export default function RestaurantListDetailsDialog(props: Props) {
 										await props.onDeleteRestaurantAction(
 											props.restaurantObject.id
 										);
+								}}
+							/>
+						</Dialog.Actions>
+					)}
+					{!UserStorage.isRestaurantProfile && (
+						<Dialog.Actions>
+							<IconButton
+								icon="calendar-plus"
+								onPress={() => {
+									if (
+										props.onMakeReservationAction !==
+										undefined
+									)
+										props.onMakeReservationAction();
 								}}
 							/>
 						</Dialog.Actions>

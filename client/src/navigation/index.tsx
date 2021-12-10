@@ -15,6 +15,7 @@ import AddRestaurantScreen from "../screens/restaurant/AddRestaurantScreen";
 import EditRestaurantScreen from "../screens/restaurant/EditRestaurantScreen";
 import MainRestaurantScreen from "../screens/restaurant/MainRestaurantScreen";
 import MainUserScreen from "../screens/user/MainUserScreen";
+import MakeReservationScreen from "../screens/user/MakeReservationScreen";
 import LinkingConfig from "./LinkingConfig";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -78,6 +79,14 @@ export default function Navigation() {
 				<Stack.Screen
 					name="MainRestaurantScreen"
 					component={MainRestaurantScreen}
+					options={{
+						title: "Panel główny restauracji",
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen
+					name="MakeReservationScreen"
+					component={MakeReservationScreen}
 					options={{
 						title: "Panel główny restauracji",
 						headerShown: false,
