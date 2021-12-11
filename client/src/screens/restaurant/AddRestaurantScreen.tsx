@@ -1,3 +1,4 @@
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -27,6 +28,7 @@ export default function AddRestaurantScreen({
 	const [max_number_of_people, setMaxNumber] = useState("");
 	const [is_making_reservations, setIsReservation] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [address, setAddress] = useState("");
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
 	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
@@ -103,6 +105,20 @@ export default function AddRestaurantScreen({
 		);
 	});
 
+	const setCoordinates = async () => {
+		await Location.requestForegroundPermissionsAsync().then((response) => {
+			if (!response.granted) {
+				console.log("brak pozwolenia");
+			}
+		});
+		await Location.geocodeAsync(address).then((response) => {
+			if (response.length === 1) {
+				setLatitude(response[0].latitude.toFixed(7));
+				setLongitude(response[0].longitude.toFixed(7));
+			}
+		});
+	};
+
 	return (
 		<View style={styles.container}>
 			<Appbar.Header>
@@ -125,6 +141,16 @@ export default function AddRestaurantScreen({
 					autoComplete
 					dense
 					mode="outlined"
+					label="Address"
+					value={address}
+					onChangeText={setAddress}
+					onChange={setCoordinates}
+				/>
+				<TextInput
+					autoComplete
+					dense
+					disabled
+					mode="outlined"
 					label="Latitude"
 					keyboardType="numeric"
 					value={latitude}
@@ -133,6 +159,7 @@ export default function AddRestaurantScreen({
 				<TextInput
 					autoComplete
 					dense
+					disabled
 					mode="outlined"
 					label="Longitude"
 					keyboardType="numeric"
