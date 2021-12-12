@@ -8,6 +8,7 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from .models import RestaurantCategory, Restaurant, Table, OpeningHours, RestaurantPhoto
 from .serializers import (
@@ -15,9 +16,11 @@ from .serializers import (
     RestaurantSerializer,
     TableSerializer,
     ListRestaurantSerializer,
-    OpeningHoursSerializer
+    OpeningHoursSerializer,
+    RestaurantPhotoSerializer,
+    RestaurantPhotoReadSerializer,
 )
-from .permissions import IsRestaurantOwner
+from .permissions import IsRestaurantOwner, IsOwnerOfAssociatedRestaurant
 from users.permissions import HasRestaurantProfile
 from .responses import ImageResponse
 
@@ -127,11 +130,34 @@ class ListUserRestaurantsViewSet(mixins.ListModelMixin,
         return queryset
 
 
+class RestaurantPhotoViewSet(viewsets.GenericViewSet,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin):
+  
+    permission_classes = [IsOwnerOfAssociatedRestaurant,]
+    serializer_class = RestaurantPhotoSerializer
+    queryset = RestaurantPhoto.objects.all()
 
-class GetImageView(generics.GenericAPIView):
+
+class GetRestaurantPhotoImageView(generics.GenericAPIView):
 
     permission_classes = [AllowAny]
 
     def get(self, request, pk):
         restaurant_photo = get_object_or_404(RestaurantPhoto, pk=pk)
         return ImageResponse(restaurant_photo.image)
+
+
+class UploadRestaurantPhotoView(generics.GenericAPIView):
+
+    permission_classes = [AllowAny]
+    serializer_class = RestaurantPhotoSerializer
+    parser_classes = [FormParser, MultiPartParser]
+
+    def post(self, request, format=None):
+        context = {'request': request}
+        serializer = self.serializer_class(data=request.data, context=context)
+        if serializer.is_valid(raise_exception=True):
+            instance = serializer.save()
+            read_serializer = RestaurantPhotoReadSerializer(instance)
+            return Response(read_serializer.data, status=status.HTTP_201_CREATED)

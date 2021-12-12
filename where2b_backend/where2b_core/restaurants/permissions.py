@@ -12,11 +12,11 @@ class IsRestaurantOwner(BasePermission):
 		return request.user == obj.owner.user
 
 
-# class IsOwnerOfAssociatedRestaurant(BasePermission):
+class IsOwnerOfAssociatedRestaurant(BasePermission):
 
-# 	def has_object_permission(self, request, view, obj):
+	def has_object_permission(self, request, view, obj):
 
-# 		if request.user is AnonymousUser:
-# 			return False
+		if request.user is AnonymousUser:
+			return False
 
-# 		return request.user == obj.restaurant.owner.user
+		return request.user == obj.restaurant.owner.user

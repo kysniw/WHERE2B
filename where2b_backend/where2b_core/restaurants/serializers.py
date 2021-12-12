@@ -36,7 +36,7 @@ class OpeningHoursSerializer(serializers.ModelSerializer):
         return data
 
 
-class RestaurantPhotoSerializer(serializers.ModelSerializer):
+class RestaurantPhotoReadSerializer(serializers.ModelSerializer):
 
     image_url = serializers.SerializerMethodField(required=False)
 
@@ -48,9 +48,29 @@ class RestaurantPhotoSerializer(serializers.ModelSerializer):
         fields = ['restaurant', 'image_url']
 
 
+
+class RestaurantPhotoSerializer(serializers.ModelSerializer):
+
+    def validate(self, data):
+
+        request = self.context['request']
+        user = request.user
+        restaurant = data['restaurant']
+
+        if not restaurant.owner.user == user:
+            raise ValidationError(_("You must be owner of restaurant to modify it's photos."))
+
+        return data
+
+    class Meta:
+        model = RestaurantPhoto
+        fields = '__all__'
+
+
+
 class RestaurantSerializer(serializers.ModelSerializer):
 
-    photos = RestaurantPhotoSerializer(many=True, required=False) 
+    photos = RestaurantPhotoReadSerializer(many=True, required=False) 
 
     @transaction.atomic
     def create(self, validated_data):
@@ -95,7 +115,6 @@ class ListRestaurantSerializer(RestaurantSerializer):
             return rating_avg['rating__avg']
         else:
             return None
-
 
 
 class TableSerializer(serializers.ModelSerializer):
