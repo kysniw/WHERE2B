@@ -12,7 +12,9 @@ interface AxiosRequestConfigRetry extends AxiosRequestConfig {
 export default abstract class Api {
 	public static readonly axiosInstance: AxiosInstance =
 		Api.createAxiosInstance();
-	public static readonly serverApiUrl = `http://192.168.0.93:8000/api`;
+	public static readonly serverApiUrl = `${
+		process.env["SERVER_URL"] ?? ""
+	}/api`;
 
 	private static _usersApi = new UsersApi(
 		undefined,

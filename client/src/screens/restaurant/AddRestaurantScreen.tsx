@@ -2,6 +2,7 @@ import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import MapView, { Marker } from "react-native-maps";
 import {
 	Button,
 	Switch,
@@ -10,6 +11,7 @@ import {
 	Checkbox,
 	Subheading,
 	Divider,
+	Paragraph,
 } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../../types";
@@ -33,10 +35,40 @@ export default function AddRestaurantScreen({
 	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
 
+	const [location, setLocation] = useState({
+		latitude: 0,
+		longitude: 0,
+		latitudeDelta: 0.003,
+		longitudeDelta: 0.003,
+	});
+
+	useEffect(() => {
+		console.log(location);
+		setRegion(location);
+	}, [location]);
+
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		getRestaurantCategories();
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		getLocation();
 	}, []);
+
+	const getLocation = async () => {
+		await Location.requestForegroundPermissionsAsync().then((response) => {
+			if (!response.granted) {
+				console.log("brak pozwolenia");
+			}
+		});
+		await Location.getCurrentPositionAsync({}).then((response) => {
+			setLocation({
+				latitude: response.coords.latitude,
+				longitude: response.coords.longitude,
+				latitudeDelta: location.latitudeDelta,
+				longitudeDelta: location.longitudeDelta,
+			});
+		});
+	};
 
 	const getRestaurantCategories = async () => {
 		await Api.restaurantsApi
@@ -115,9 +147,22 @@ export default function AddRestaurantScreen({
 			if (response.length === 1) {
 				setLatitude(response[0].latitude.toFixed(7));
 				setLongitude(response[0].longitude.toFixed(7));
+				setLocation({
+					latitude: response[0].latitude,
+					longitude: response[0].longitude,
+					latitudeDelta: 0.01,
+					longitudeDelta: 0.01,
+				});
 			}
 		});
 	};
+
+	const [region, setRegion] = useState({
+		latitude: location.latitude,
+		longitude: location.longitude,
+		latitudeDelta: 0.01,
+		longitudeDelta: 0.01,
+	});
 
 	return (
 		<View style={styles.container}>
@@ -128,7 +173,7 @@ export default function AddRestaurantScreen({
 					subtitle="Write your restaurant's data"
 				/>
 			</Appbar.Header>
-			<View style={styles.form}>
+			<ScrollView style={styles.form}>
 				<TextInput
 					autoComplete="name"
 					dense
@@ -146,26 +191,22 @@ export default function AddRestaurantScreen({
 					onChangeText={setAddress}
 					onChange={setCoordinates}
 				/>
-				<TextInput
-					autoComplete
-					dense
-					disabled
-					mode="outlined"
-					label="Latitude"
-					keyboardType="numeric"
-					value={latitude}
-					onChangeText={setLatitude}
-				/>
-				<TextInput
-					autoComplete
-					dense
-					disabled
-					mode="outlined"
-					label="Longitude"
-					keyboardType="numeric"
-					value={longitude}
-					onChangeText={setLongitude}
-				/>
+				<MapView
+					style={styles.map}
+					liteMode
+					region={region}
+					onRegionChange={(region) => setRegion(region)}
+					showsUserLocation={true}
+				>
+					<Marker
+						coordinate={{
+							latitude: region.latitude,
+							longitude: region.longitude,
+						}}
+					/>
+				</MapView>
+				<Paragraph>Current latitude: {region.latitude}</Paragraph>
+				<Paragraph>Current longitude: {region.longitude}</Paragraph>
 				<TextInput
 					autoComplete
 					dense
@@ -185,7 +226,7 @@ export default function AddRestaurantScreen({
 					/>
 				</View>
 				<Divider />
-				<ScrollView>{categoriesCheckBoxes}</ScrollView>
+				<View>{categoriesCheckBoxes}</View>
 				<Button
 					style={styles.changeFormButton}
 					mode="contained"
@@ -194,7 +235,7 @@ export default function AddRestaurantScreen({
 				>
 					Add restaurant
 				</Button>
-			</View>
+			</ScrollView>
 		</View>
 	);
 }
@@ -208,7 +249,6 @@ const styles = StyleSheet.create({
 	form: {
 		flex: 9,
 		alignSelf: "center",
-		justifyContent: "center",
 		width: "80%",
 		maxWidth: 400,
 	},
@@ -225,5 +265,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#222",
 		marginTop: 50,
+	},
+	map: {
+		marginTop: 10,
+		width: "100%",
+		height: 400,
 	},
 });
