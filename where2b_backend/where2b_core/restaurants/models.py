@@ -23,6 +23,12 @@ class Restaurant(models.Model):
 	categories = models.ManyToManyField(RestaurantCategory, help_text=_('Categories of restaurant'))
 	owner = models.ForeignKey(RestaurantProfile, default=None, on_delete=models.CASCADE, null=False, blank=False)
 	is_verified = models.BooleanField(default=False, null=False, blank=False)
+	city_name = models.CharField(help_text=_('City name'), max_length=500, null=False, blank=False, default='Wrocław')
+	street_name = models.CharField(help_text=_('Street name'), max_length=500, null=False, blank=False, default='')
+	street_number = models.CharField(help_text=_('Street number'), max_length=10, null=False, blank=False, default='')
+	flat_number = models.CharField(help_text=_('Flat number'), max_length=10, null=True, blank=True)
+	postal_code = models.CharField(help_text=_('Postal code'), max_length=6, null=False, blank=False, default='')
+
 
 	def __str__(self):
 		return self.name
