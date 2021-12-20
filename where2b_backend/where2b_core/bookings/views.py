@@ -11,6 +11,7 @@ import pytz
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django_filters import rest_framework as filters
 
 
 from .models import Booking
@@ -61,31 +62,37 @@ class BookingsViewSet(viewsets.GenericViewSet,
 			return BookingSerializer
 
 
-class ListRestaurateurBookingsView(generics.GenericAPIView):
+class ListRestaurateurBookingsView(generics.ListAPIView):
 
 	permission_classes = [IsRestaurantOwner]
+	
 	serializer_class = BookingSerializer
-	queryset = Booking.objects.filter(is_finished=False)
+	queryset = Booking.objects.all()
+	filter_backends = [filters.DjangoFilterBackend]
+	filterset_fields = ['is_finished', ]
 
-	def get(self, request, restaurant_id):
-		restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+	def get_queryset(self):
+		restaurant = self.get_restaurant()
+		return Booking.objects.filter(table__restaurant=restaurant)
+
+	def get_restaurant(self):
+		restaurant = get_object_or_404(Restaurant, id=self.kwargs['restaurant_id'])
 		self.check_object_permissions(self.request, restaurant)
-		bookings = self.queryset.filter(table__restaurant=restaurant, is_finished=False)
-		serializer = BookingSerializer(bookings, many=True)
-		return Response(serializer.data)
+		return restaurant
 
 
-class ListUserBookingsView(generics.GenericAPIView):
+class ListUserBookingsView(generics.ListAPIView):
 
 	permission_classes = [IsAuthenticated, HasUserProfile]
 	serializer_class = ReadBookingSerializer
-	queryset = Booking.objects.filter(is_finished=False)
+	queryset = Booking.objects.all()
+	filter_backends = [filters.DjangoFilterBackend]
+	filterset_fields = ['is_finished', ]
 
-	def get(self, request):
-		user = request.user
-		bookings = self.queryset.filter(user__user=user)
-		serializer = ReadBookingSerializer(bookings, many=True)
-		return Response(serializer.data)
+	def get_queryset(self):
+		user = self.request.user
+		return Booking.objects.filter(user__user=user)
+
 
 class ListAvailableSeatsView(generics.GenericAPIView):
 
