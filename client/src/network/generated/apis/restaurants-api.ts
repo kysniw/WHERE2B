@@ -33,6 +33,8 @@ import { RestaurantListResponseModel } from '../models';
 // @ts-ignore
 import { RestaurantModel } from '../models';
 // @ts-ignore
+import { RestaurantPhotoModel } from '../models';
+// @ts-ignore
 import { TableListResponseModel } from '../models';
 // @ts-ignore
 import { TableModel } from '../models';
@@ -459,6 +461,42 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('restaurantPhotoDelete', 'id', id)
+            const localVarPath = `/restaurants/restaurant-photo/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -487,6 +525,140 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoPartialUpdate: async (id: number, data: RestaurantPhotoModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('restaurantPhotoPartialUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('restaurantPhotoPartialUpdate', 'data', data)
+            const localVarPath = `/restaurants/restaurant-photo/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoUpdate: async (id: number, data: RestaurantPhotoModel, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('restaurantPhotoUpdate', 'id', id)
+            // verify required parameter 'data' is not null or undefined
+            assertParamExists('restaurantPhotoUpdate', 'data', data)
+            const localVarPath = `/restaurants/restaurant-photo/{id}/`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(data, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {any} image 
+         * @param {number} restaurant 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoUploadCreate: async (image: any, restaurant: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'image' is not null or undefined
+            assertParamExists('restaurantPhotoUploadCreate', 'image', image)
+            // verify required parameter 'restaurant' is not null or undefined
+            assertParamExists('restaurantPhotoUploadCreate', 'restaurant', restaurant)
+            const localVarPath = `/restaurants/restaurant-photo-upload/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+            if (image !== undefined) { 
+                localVarFormParams.append('image', image as any);
+            }
+    
+            if (restaurant !== undefined) { 
+                localVarFormParams.append('restaurant', restaurant as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -939,12 +1111,55 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async restaurantPhotoDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async restaurantPhotoImageRead(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoImageRead(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async restaurantPhotoPartialUpdate(id: number, data: RestaurantPhotoModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantPhotoModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoPartialUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async restaurantPhotoUpdate(id: number, data: RestaurantPhotoModel, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantPhotoModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoUpdate(id, data, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {any} image 
+         * @param {number} restaurant 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async restaurantPhotoUploadCreate(image: any, restaurant: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RestaurantPhotoModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurantPhotoUploadCreate(image, restaurant, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1144,12 +1359,51 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.restaurantPhotoDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         restaurantPhotoImageRead(id: string, options?: any): AxiosPromise<void> {
             return localVarFp.restaurantPhotoImageRead(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoPartialUpdate(id: number, data: RestaurantPhotoModel, options?: any): AxiosPromise<RestaurantPhotoModel> {
+            return localVarFp.restaurantPhotoPartialUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id A unique integer value identifying this restaurant photo.
+         * @param {RestaurantPhotoModel} data 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoUpdate(id: number, data: RestaurantPhotoModel, options?: any): AxiosPromise<RestaurantPhotoModel> {
+            return localVarFp.restaurantPhotoUpdate(id, data, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {any} image 
+         * @param {number} restaurant 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        restaurantPhotoUploadCreate(image: any, restaurant: number, options?: any): AxiosPromise<RestaurantPhotoModel> {
+            return localVarFp.restaurantPhotoUploadCreate(image, restaurant, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1360,6 +1614,17 @@ export class RestaurantsApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} id A unique integer value identifying this restaurant photo.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public restaurantPhotoDelete(id: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantPhotoDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1367,6 +1632,42 @@ export class RestaurantsApi extends BaseAPI {
      */
     public restaurantPhotoImageRead(id: string, options?: AxiosRequestConfig) {
         return RestaurantsApiFp(this.configuration).restaurantPhotoImageRead(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this restaurant photo.
+     * @param {RestaurantPhotoModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public restaurantPhotoPartialUpdate(id: number, data: RestaurantPhotoModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantPhotoPartialUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} id A unique integer value identifying this restaurant photo.
+     * @param {RestaurantPhotoModel} data 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public restaurantPhotoUpdate(id: number, data: RestaurantPhotoModel, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantPhotoUpdate(id, data, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {any} image 
+     * @param {number} restaurant 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RestaurantsApi
+     */
+    public restaurantPhotoUploadCreate(image: any, restaurant: number, options?: AxiosRequestConfig) {
+        return RestaurantsApiFp(this.configuration).restaurantPhotoUploadCreate(image, restaurant, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

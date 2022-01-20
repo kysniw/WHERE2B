@@ -11,6 +11,7 @@ configuration.ts
 git_push.sh
 index.ts
 models/available-tables-model.ts
+models/booking-list-response-model.ts
 models/booking-model.ts
 models/create-booking-model.ts
 models/create-rating-model.ts
@@ -31,6 +32,7 @@ models/restaurant-category-model.ts
 models/restaurant-list-response-model.ts
 models/restaurant-model.ts
 models/restaurant-photo-model.ts
+models/restaurant-photo-read-model.ts
 models/restaurant-profile-list-response-model.ts
 models/restaurant-profile-model.ts
 models/sign-in-model.ts

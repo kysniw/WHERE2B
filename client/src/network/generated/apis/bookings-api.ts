@@ -23,6 +23,8 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 // @ts-ignore
 import { AvailableTablesModel } from '../models';
 // @ts-ignore
+import { BookingListResponseModel } from '../models';
+// @ts-ignore
 import { BookingModel } from '../models';
 // @ts-ignore
 import { CreateBookingModel } from '../models';
@@ -277,10 +279,12 @@ export const BookingsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @param {string} restaurantId 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurateurBookingsRead: async (restaurantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        restaurateurBookingsRead: async (restaurantId: string, limit?: number, offset?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'restaurantId' is not null or undefined
             assertParamExists('restaurateurBookingsRead', 'restaurantId', restaurantId)
             const localVarPath = `/bookings/restaurateur-bookings/{restaurant_id}/`
@@ -298,6 +302,14 @@ export const BookingsApiAxiosParamCreator = function (configuration?: Configurat
 
             // authentication Bearer required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
 
     
@@ -429,11 +441,13 @@ export const BookingsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} restaurantId 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async restaurateurBookingsRead(restaurantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookingModel>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurateurBookingsRead(restaurantId, options);
+        async restaurateurBookingsRead(restaurantId: string, limit?: number, offset?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookingListResponseModel>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.restaurateurBookingsRead(restaurantId, limit, offset, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -518,11 +532,13 @@ export const BookingsApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @param {string} restaurantId 
+         * @param {number} [limit] Number of results to return per page.
+         * @param {number} [offset] The initial index from which to return the results.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        restaurateurBookingsRead(restaurantId: string, options?: any): AxiosPromise<BookingModel> {
-            return localVarFp.restaurateurBookingsRead(restaurantId, options).then((request) => request(axios, basePath));
+        restaurateurBookingsRead(restaurantId: string, limit?: number, offset?: number, options?: any): AxiosPromise<BookingListResponseModel> {
+            return localVarFp.restaurateurBookingsRead(restaurantId, limit, offset, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -617,12 +633,14 @@ export class BookingsApi extends BaseAPI {
     /**
      * 
      * @param {string} restaurantId 
+     * @param {number} [limit] Number of results to return per page.
+     * @param {number} [offset] The initial index from which to return the results.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BookingsApi
      */
-    public restaurateurBookingsRead(restaurantId: string, options?: AxiosRequestConfig) {
-        return BookingsApiFp(this.configuration).restaurateurBookingsRead(restaurantId, options).then((request) => request(this.axios, this.basePath));
+    public restaurateurBookingsRead(restaurantId: string, limit?: number, offset?: number, options?: AxiosRequestConfig) {
+        return BookingsApiFp(this.configuration).restaurateurBookingsRead(restaurantId, limit, offset, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -24,8 +24,13 @@ export default function RestaurantListItemView(props: Props) {
 			)}
 			<Card.Content>
 				<Title>{props.restaurant.name}</Title>
-				<Paragraph>Szerokość: {props.restaurant.latitude}</Paragraph>
-				<Paragraph>Wysokość: {props.restaurant.longitude}</Paragraph>
+				<Paragraph>
+					Adres: {props.restaurant.street_name}{" "}
+					{props.restaurant.street_number}
+					{props.restaurant.flat_number === "" ? null : "/"}
+					{props.restaurant.flat_number}
+				</Paragraph>
+				<Paragraph>Miasto: {props.restaurant.city_name}</Paragraph>
 			</Card.Content>
 			<Card.Actions style={{ flexDirection: "row-reverse" }}>
 				<IconButton

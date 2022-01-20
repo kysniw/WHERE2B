@@ -1,4 +1,5 @@
 export * from './available-tables-model';
+export * from './booking-list-response-model';
 export * from './booking-model';
 export * from './create-booking-model';
 export * from './create-rating-model';
@@ -18,6 +19,7 @@ export * from './restaurant-category-model';
 export * from './restaurant-list-response-model';
 export * from './restaurant-model';
 export * from './restaurant-photo-model';
+export * from './restaurant-photo-read-model';
 export * from './restaurant-profile-list-response-model';
 export * from './restaurant-profile-model';
 export * from './sign-in-model';

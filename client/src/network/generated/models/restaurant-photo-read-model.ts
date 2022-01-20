@@ -17,26 +17,20 @@
 /**
  * 
  * @export
- * @interface RestaurantPhotoModel
+ * @interface RestaurantPhotoReadModel
  */
-export interface RestaurantPhotoModel {
+export interface RestaurantPhotoReadModel {
     /**
      * 
      * @type {number}
-     * @memberof RestaurantPhotoModel
+     * @memberof RestaurantPhotoReadModel
      */
-    'id'?: number;
+    'restaurant': number;
     /**
      * 
      * @type {string}
-     * @memberof RestaurantPhotoModel
+     * @memberof RestaurantPhotoReadModel
      */
-    'image'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof RestaurantPhotoModel
-     */
-    'restaurant': number;
+    'image_url'?: string;
 }
 

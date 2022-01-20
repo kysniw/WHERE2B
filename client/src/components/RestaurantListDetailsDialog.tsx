@@ -37,6 +37,17 @@ export default function RestaurantListDetailsDialog(props: Props) {
 					</Dialog.Title>
 					<Dialog.Content>
 						<Paragraph>
+							Adres: {props.restaurantObject.street_name}{" "}
+							{props.restaurantObject.street_number}
+							{props.restaurantObject.flat_number === ""
+								? null
+								: "/"}
+							{props.restaurantObject.flat_number}
+							{", "}
+							{props.restaurantObject.postal_code}{" "}
+							{props.restaurantObject.city_name}
+						</Paragraph>
+						<Paragraph>
 							Szerokość: {props.restaurantObject.latitude}
 						</Paragraph>
 						<Paragraph>

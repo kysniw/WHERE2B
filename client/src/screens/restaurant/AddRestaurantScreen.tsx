@@ -12,6 +12,8 @@ import {
 	Subheading,
 	Divider,
 	Paragraph,
+	IconButton,
+	Text,
 } from "react-native-paper";
 
 import { RootStackScreenProps } from "../../../types";
@@ -34,6 +36,12 @@ export default function AddRestaurantScreen({
 	const [categories, setCategories] = useState<RestaurantCategoryModel[]>([]);
 	const [categoriesNumber, setCategoriesNumber] = useState<number[]>([]);
 	const [checked, setChecked] = useState<boolean[]>([]);
+	const [street_name, setStreetName] = useState("");
+	const [street_number, setStreetNumber] = useState("");
+	const [city_name, setCityName] = useState("");
+	const [postal_code, setPostalCode] = useState("");
+	const [flat_number, setFlatNumber] = useState("");
+	const [seatsCount, setSeatsCount] = useState(1);
 
 	const [location, setLocation] = useState({
 		latitude: 0,
@@ -99,6 +107,11 @@ export default function AddRestaurantScreen({
 			name,
 			latitude,
 			longitude,
+			city_name,
+			street_name,
+			street_number,
+			flat_number,
+			postal_code,
 			max_number_of_people: parseInt(max_number_of_people, 10),
 			is_making_reservations,
 			categories: categoriesNumber,
@@ -137,7 +150,32 @@ export default function AddRestaurantScreen({
 		);
 	});
 
+	function AddTablesView() {
+		return (
+			<View>
+				<Text onPressIn onPressOut style={{ alignSelf: "center" }}>
+					Number of seats
+				</Text>
+				<View style={styles.tableContainer}>
+					<IconButton
+						disabled={seatsCount <= 1}
+						icon="minus"
+						onPress={() => setSeatsCount(seatsCount - 1)}
+					/>
+					<Text onPressIn onPressOut style={styles.tableText}>
+						{seatsCount}
+					</Text>
+					<IconButton
+						icon="plus"
+						onPress={() => setSeatsCount(seatsCount + 1)}
+					/>
+				</View>
+			</View>
+		);
+	}
+
 	const setCoordinates = async () => {
+		setAddress(city_name + ", " + street_name + " " + street_number + " ");
 		await Location.requestForegroundPermissionsAsync().then((response) => {
 			if (!response.granted) {
 				console.log("brak pozwolenia");
@@ -180,17 +218,64 @@ export default function AddRestaurantScreen({
 					mode="outlined"
 					label="Name"
 					value={name}
+					textContentType="name"
 					onChangeText={setName}
+				/>
+				<Divider />
+				<TextInput
+					autoComplete
+					dense
+					mode="outlined"
+					label="Street name"
+					value={street_name}
+					textContentType="streetAddressLine1"
+					onChangeText={setStreetName}
+					onChange={setCoordinates}
 				/>
 				<TextInput
 					autoComplete
 					dense
 					mode="outlined"
-					label="Address"
-					value={address}
-					onChangeText={setAddress}
+					label="Street number"
+					value={street_number}
+					textContentType="streetAddressLine2"
+					onChangeText={setStreetNumber}
 					onChange={setCoordinates}
 				/>
+				<TextInput
+					autoComplete
+					dense
+					mode="outlined"
+					label="Flat number (optional)"
+					value={flat_number}
+					onChangeText={setFlatNumber}
+				/>
+				<TextInput
+					autoComplete
+					dense
+					mode="outlined"
+					label="City name"
+					value={city_name}
+					textContentType="addressCity"
+					onChangeText={setCityName}
+					onChange={setCoordinates}
+				/>
+				<TextInput
+					autoComplete="postal-code"
+					dense
+					mode="outlined"
+					label="Postal code"
+					value={postal_code}
+					textContentType="postalCode"
+					onChangeText={setPostalCode}
+				/>
+				<Button
+					style={styles.changeFormButton}
+					mode="contained"
+					onPress={setCoordinates}
+				>
+					Refresh map
+				</Button>
 				<MapView
 					style={styles.map}
 					liteMode
@@ -227,6 +312,7 @@ export default function AddRestaurantScreen({
 				</View>
 				<Divider />
 				<View>{categoriesCheckBoxes}</View>
+				{is_making_reservations === true ? <AddTablesView /> : null}
 				<Button
 					style={styles.changeFormButton}
 					mode="contained"
@@ -270,5 +356,19 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		width: "100%",
 		height: 400,
+	},
+	tableContainer: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	tableText: {
+		fontSize: 16,
+		borderWidth: 1,
+		borderRadius: 4,
+		marginHorizontal: 10,
+		paddingHorizontal: 10,
+		paddingVertical: 4,
+		textAlign: "center",
 	},
 });

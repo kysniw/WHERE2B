@@ -13,7 +13,7 @@
  */
 
 
-import { RestaurantPhotoModel } from './restaurant-photo-model';
+import { RestaurantPhotoReadModel } from './restaurant-photo-read-model';
 
 /**
  * 
@@ -29,10 +29,10 @@ export interface ListRestaurantModel {
     'id'?: number;
     /**
      * 
-     * @type {Array<RestaurantPhotoModel>}
+     * @type {Array<RestaurantPhotoReadModel>}
      * @memberof ListRestaurantModel
      */
-    'photos'?: Array<RestaurantPhotoModel>;
+    'photos'?: Array<RestaurantPhotoReadModel>;
     /**
      * 
      * @type {string}
@@ -81,6 +81,36 @@ export interface ListRestaurantModel {
      * @memberof ListRestaurantModel
      */
     'is_verified'?: boolean;
+    /**
+     * City name
+     * @type {string}
+     * @memberof ListRestaurantModel
+     */
+    'city_name'?: string;
+    /**
+     * Street name
+     * @type {string}
+     * @memberof ListRestaurantModel
+     */
+    'street_name'?: string;
+    /**
+     * Street number
+     * @type {string}
+     * @memberof ListRestaurantModel
+     */
+    'street_number'?: string;
+    /**
+     * Flat number
+     * @type {string}
+     * @memberof ListRestaurantModel
+     */
+    'flat_number'?: string | null;
+    /**
+     * Postal code
+     * @type {string}
+     * @memberof ListRestaurantModel
+     */
+    'postal_code'?: string;
     /**
      * 
      * @type {string}
