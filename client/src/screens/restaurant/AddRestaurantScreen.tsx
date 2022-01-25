@@ -21,6 +21,8 @@ import Api from "../../network/Api";
 import {
 	RestaurantCategoryModel,
 	RestaurantModel,
+	TableListResponseModel,
+	TableModel,
 } from "../../network/generated";
 
 export default function AddRestaurantScreen({
@@ -42,6 +44,9 @@ export default function AddRestaurantScreen({
 	const [postal_code, setPostalCode] = useState("");
 	const [flat_number, setFlatNumber] = useState("");
 	const [seatsCount, setSeatsCount] = useState(1);
+	const [avaibleSeats, setAvaibleSeats] = useState(0);
+	const [tableArray, setTableArray] = useState<TableModel[]>([]);
+	const [registerStatus, setRegisterStatus] = useState<number>(0);
 
 	const [location, setLocation] = useState({
 		latitude: 0,
@@ -122,7 +127,8 @@ export default function AddRestaurantScreen({
 			.then((response) => {
 				setIsLoading(false);
 				console.log(response.data);
-				navigation.goBack();
+				if (is_making_reservations === true) setRegisterStatus(1);
+				else setRegisterStatus(2);
 			})
 			.catch((error) => {
 				setIsLoading(false);
@@ -151,8 +157,55 @@ export default function AddRestaurantScreen({
 	});
 
 	function AddTablesView() {
+		setAvaibleSeats(parseInt(max_number_of_people, 10));
 		return (
 			<View>
+				<Appbar.Header>
+					<Appbar.Content
+						title="Add Tables"
+						subtitle="Write your restaurant's data"
+					/>
+				</Appbar.Header>
+				<Text onPressIn onPressOut style={{ alignSelf: "center" }}>
+					Number of seats
+				</Text>
+				<View style={styles.tableContainer}>
+					<IconButton
+						disabled={seatsCount <= 1}
+						icon="minus"
+						onPress={() => setSeatsCount(seatsCount - 1)}
+					/>
+					<Text onPressIn onPressOut style={styles.tableText}>
+						{seatsCount}
+					</Text>
+					<IconButton
+						icon="plus"
+						onPress={() => setSeatsCount(seatsCount + 1)}
+					/>
+				</View>
+				<View style={styles.switch_view}>
+					<Subheading>Outside</Subheading>
+					<Switch
+						value={is_making_reservations}
+						onValueChange={() =>
+							setIsReservation(!is_making_reservations)
+						}
+					/>
+				</View>
+			</View>
+		);
+	}
+
+	function AddWorkingHoursView() {
+		return (
+			<View>
+				<Appbar.Header>
+					<Appbar.BackAction onPress={() => navigation.goBack()} />
+					<Appbar.Content
+						title="Add Working Hours"
+						subtitle="Choose days and hours"
+					/>
+				</Appbar.Header>
 				<Text onPressIn onPressOut style={{ alignSelf: "center" }}>
 					Number of seats
 				</Text>
